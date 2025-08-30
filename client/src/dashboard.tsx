@@ -14,7 +14,7 @@ interface DashboardProps {
   onCreateClick: () => void;
 }
 
-export default function Dashboard({ projects, onProjectClick, onVote, onCreateClick }: DashboardProps) {
+export default function Dashboard({ onProjectClick, onVote, onCreateClick }: DashboardProps) {
   const [type, setType] = React.useState(''); // Default is All
   const [sort, setSort] = React.useState(''); // Default is sort by votes
   
@@ -23,33 +23,14 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const navigate = useNavigate();
-
-  const handleNewProject = () => {
-    navigate('/proposal');
-  };
-
   const changeType = (event: SelectChangeEvent) => {
-    setFilterType(event.target.value);
+    setType(event.target.value);
   };
-
-  useEffect(() => {
-    const loadProjects = async () => {
-      try {
-        setLoading(true);
-        const fetchedProjects = await fetchProjects();
-        setProjects(fetchedProjects);
-        setError(null);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load projects');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadProjects();
-  }, []);
-
+  
+   const changeSort = (event: SelectChangeEvent) => {
+    setSort(event.target.value);
+  };
+  
   const filteredProjects: Project[] = projects?.filter(project => 
     type === '' || project.type === type
   );
@@ -67,6 +48,29 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
         return 0;
     }
   });
+  
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        setLoading(true);
+        const fetchedProjects = await fetchProjects();
+        setProjects(fetchedProjects);
+        setError(null);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load projects');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadProjects();
+  }, []);
+  
+  const navigate = useNavigate();
+
+  const handleNewProject = () => {
+    navigate('/proposal');
+  };
 
   const refreshProjects = async () => {
     try {
@@ -125,7 +129,7 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
             <Select
               displayEmpty
               labelId="type-label"
-              value={filterType}
+              value={type}
               onChange={changeType}
             >
               <MenuItem value={""}>All Types</MenuItem>
@@ -141,7 +145,7 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
             <Select
               displayEmpty
               labelId="sort-label"
-              value={sortBy}
+              value={sort}
               onChange={changeSort}
             >
               <MenuItem value={""}>Most Votes</MenuItem>
