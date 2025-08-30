@@ -75,21 +75,6 @@ export default function ProjectPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [err, setErr] = useState<string | null>(null);
 
-  // useEffect(() => {
-  //   const dummyData: Project = {
-  //     title: "Green Community Park",
-  //     description:
-  //       "Transform the vacant lot on Maple Street into a sustainable community park with native plants, solar lighting, and rainwater collection systems.",
-  //     tags: ["Government Initiative", "Accepted", "1/15/2024"],
-  //     votes: 45,
-  //     concerns: [
-  //       { icon: <InfoIcon />, label: "Budget", desc: "2" },
-  //       { icon: <AccessTimeIcon />, label: "Timeline", desc: "8" },
-  //     ]
-  //   };
-  //   setProject(dummyData);
-  // }, []);
-
   const fetchProject = async (id: string): Promise<Project> => {
       try {
         const response = await fetch(`/api/proposals/${id}`, {
