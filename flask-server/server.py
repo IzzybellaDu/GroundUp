@@ -134,10 +134,9 @@ def add_project_route():
             contact_email=contact_email,
             status=status,
             lattitude=lattitude,
-            longitude=longitude
-        )
-
-        print('hi')
+            longitude=longitude,
+            votes=0
+        )c
         
         return {
             'status': 'success', 

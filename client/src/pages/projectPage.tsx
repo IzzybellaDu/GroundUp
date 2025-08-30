@@ -36,6 +36,49 @@ interface Project {
   };
 }
 
+type LikeButtonProps = {
+  initialCount?: number;
+  storageKey?: string;
+  onChange?: (liked: boolean, nextCount: number) => void;
+}
+
+export function LikeButton({initialCount = 0, storageKey, onChange}: LikeButtonProps) {
+  const [liked, setLiked] = useState<boolean>(() => {
+    if (!storageKey) return false;
+    return localStorage.getItem(storageKey) === '1';
+  });
+  const [count, setCount] = useState<number>(() => initialCount + (liked ? 1 : 0));
+
+  const toggleLike = () => {
+    const nextLiked = !liked;
+    const delta = nextLiked ? +1 : -1;
+    const nextCount = count + delta;
+
+    setLiked(nextLiked);
+    setCount(nextCount);
+
+    if (storageKey) {
+      localStorage.setItem(storageKey, nextLiked ? '1' : '0');
+    }
+
+    onChange?.(nextLiked, nextCount);
+  };
+
+  return (
+    <div>
+      <Button
+      variant={liked ? "contained" : "outlined"}
+      startIcon={<ThumbUpIcon />}
+      onClick={toggleLike}
+      >
+      {liked ? "" : ""}
+      </Button>
+      <Typography sx={{ mt : 1 }}>{count} Upvotes</Typography>
+    </div>
+  )
+}
+
+
 export default function ProjectPage() {
   const [project, setProject] = useState<Project | null>(null);
 
@@ -45,7 +88,7 @@ export default function ProjectPage() {
       description:
         "Transform the vacant lot on Maple Street into a sustainable community park with native plants, solar lighting, and rainwater collection systems.",
       tags: ["Government Initiative", "Accepted", "1/15/2024"],
-      // votes: 45,
+      votes: 45,
       concerns: [
         { icon: <InfoIcon />, label: "Budget", desc: "2 million" },
         { icon: <AccessTimeIcon />, label: "Timeline", desc: "8 months" },
@@ -79,8 +122,10 @@ export default function ProjectPage() {
             ))}
           </Box>
           <Box sx={{ textAlign: "center" }}>
-            <ThumbUpIcon />
-            <Typography>{project.votes}</Typography>
+            <LikeButton
+              initialCount={project.votes}
+              storageKey={`project:${project.title}:liked`}
+            />
           </Box>
         </Box>
         <Typography variant="h5" sx={{ fontWeight: 600, mb: 1 }}>
