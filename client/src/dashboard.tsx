@@ -67,8 +67,65 @@ export default function Dashboard({ onProjectClick, onVote }: DashboardProps) {
   
   const navigate = useNavigate();
 
+  // Add state for authentication
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [username, setUsername] = useState('');
+  
+    // Check authentication status when component mounts
+    useEffect(() => {
+      checkAuthStatus();
+    }, []);
+  
+    const checkAuthStatus = async () => {
+      try {
+        const response = await fetch('/api/auth-status');
+        const data = await response.json();
+        
+        if (data.authenticated) {
+          setIsAuthenticated(true);
+          setUsername(data.username);
+        } else {
+          setIsAuthenticated(false);
+          setUsername('');
+        }
+      } catch (error) {
+        console.error('Auth check error:', error);
+        setIsAuthenticated(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
   const handleNewProject = () => {
     navigate('/proposal');
+  };
+
+  function registerClick() {
+    navigate("/register"); // navigate to Register page
+  }
+
+  function loginClick() {
+    navigate("/login"); // navigate to Login page
+  }
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/logout', {
+        method: 'POST'
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        alert(data.message);
+        // Update state instead of reloading page
+        setIsAuthenticated(false);
+        setUsername('');
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      alert('Error logging out');
+    }
   };
 
   const refreshProjects = async () => {
@@ -152,6 +209,26 @@ export default function Dashboard({ onProjectClick, onVote }: DashboardProps) {
               <MenuItem value={"urgency"}>Highest Urgency</MenuItem>
             </Select>
           </FormControl>
+        </div>
+        <div>
+          {/* Conditionally render auth buttons */}
+                {isAuthenticated ? (
+                  // Show only logout when logged in
+                  <Button variant="outlined" color="secondary" onClick={handleLogout}>
+                    Logout
+                  </Button>
+                ) : (
+                  // Show register and login when not logged in
+                  <>
+                    <Button variant="contained" sx={{ backgroundColor: "black" }} onClick={registerClick}>
+                      Register
+                    </Button>
+
+                    <Button variant="contained" sx={{ backgroundColor: "black" }} onClick={loginClick}>
+                      Login
+                    </Button>
+                  </>
+                )}
         </div>
       
       {!loading && !error && (
