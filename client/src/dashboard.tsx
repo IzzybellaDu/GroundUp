@@ -162,12 +162,11 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
               value={filterType}
               onChange={changeType}
             >
-              <MenuItem value={""}>All Types</MenuItem>
-              <MenuItem value={"env"}>Envrionmental/Sustainability</MenuItem>
-              <MenuItem value={"traffic"}>Traffic</MenuItem>
-              <MenuItem value={"bike"}>Bike Lanes</MenuItem>
-              <MenuItem value={"road"}>Roads</MenuItem>
-              <MenuItem value={"pt"}>Public Transport</MenuItem>
+              <MenuItem value={"Environmental/sustainability"}>Environmental/Sustainability</MenuItem>
+              <MenuItem value={"Traffic"}>Traffic</MenuItem>
+              <MenuItem value={"Bike Lanes"}>Bike Lanes</MenuItem>
+              <MenuItem value={"Roads"}>Roads</MenuItem>
+              <MenuItem value={"Public Transport"}>Public Transport</MenuItem>
             </Select>
           </FormControl>
           <FormControl variant="filled" sx={{ minWidth: 250, verticalAlign: "middle", padding: "0 10px" }} size="small" >
