@@ -13,11 +13,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />} />
+      <Route path="/old" element={<App></App>}></Route>
       <Route path="/proposal" element={<ProposalForm></ProposalForm>}></Route>
       <Route path="/login" element={<LoginForm></LoginForm>}></Route>
       <Route path="/register" element={<RegisterForm></RegisterForm>}></Route>
-      <Route path='/dashboard' element={<Dashboard projects={[]} onProjectClick={function (projectId: string): void {
+      <Route path='/' element={<Dashboard projects={[]} onProjectClick={function (projectId: string): void {
         throw new Error('Function not implemented.');
       } } onVote={function (projectId: string, voteType: 'up' | 'down'): void {
         throw new Error('Function not implemented.');

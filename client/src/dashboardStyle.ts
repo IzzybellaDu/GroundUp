@@ -29,6 +29,7 @@ export const GlobalStyle = createGlobalStyle`
         
     .filters {
         display: flex;
+        justify-content: space-between;
         flex-direction: row;
         align-items: center;
         padding-top: 2%;
