@@ -1,4 +1,4 @@
-import { Button, TextField, Container, Typography, Box } from '@mui/material';
+import { Button, TextField, Container, Typography, Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import React, { useState } from 'react';
 
 const ProposalForm = () => {
@@ -7,7 +7,9 @@ const ProposalForm = () => {
         description: '',
         budget: '',
         timeline: '',
-        contactEmail: ''
+        contactEmail: '',
+        government: '',
+        status: ''
     });
 
     const handleChange = (e) => {
@@ -28,6 +30,7 @@ const ProposalForm = () => {
         formDataObj.append('budget', formData.budget);
         formDataObj.append('timeline', formData.timeline);
         formDataObj.append('contactEmail', formData.contactEmail);
+        formDataObj.append('government', formData.government);
 
         try {
             const response = await fetch('/api/proposals', {
@@ -41,7 +44,9 @@ const ProposalForm = () => {
                     description: '',
                     budget: '',
                     timeline: '',
-                    contactEmail: ''
+                    contactEmail: '',
+                    government: '',
+                    status: ''
                 });
                 window.location.href = '/'; // Redirect to index, matching Flask's redirect
             } else {
@@ -71,7 +76,9 @@ const ProposalForm = () => {
             description: '',
             budget: '',
             timeline: '',
-            contactEmail: ''
+            contactEmail: '',
+            government: '',
+            status: ''
         });
     };
 
@@ -137,6 +144,41 @@ const ProposalForm = () => {
                             required
                             variant="outlined"
                         />
+
+                        <FormControl fullWidth>
+                        <InputLabel id="status-select-label">Project Status</InputLabel>
+                        <Select
+                            labelId="status-select-label"
+                            id="status-select"
+                            name="status"
+                            value={formData.status}
+                            label="Project Status"
+                            onChange={handleChange}
+                            required
+                        >
+                            <MenuItem value="active">Active</MenuItem>
+                            <MenuItem value="completed">Completed</MenuItem>
+                            <MenuItem value="pending">Pending</MenuItem>
+                            <MenuItem value="on-hold">On Hold</MenuItem>
+                            
+                        </Select>
+                        </FormControl>     
+
+                        <FormControl fullWidth>
+                        <InputLabel id="government-select-label">Government Status</InputLabel>
+                        <Select
+                            labelId="government-select-label"
+                            id="government-select"
+                            name="government"
+                            value={formData.government}
+                            label="Government Status"
+                            onChange={handleChange}
+                            required
+                        >
+                            <MenuItem value="government">Government project</MenuItem>
+                            <MenuItem value="community">Community suggestion</MenuItem>
+                        </Select>
+                        </FormControl>    
 
                         <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
                             <Button variant="contained" type="submit">

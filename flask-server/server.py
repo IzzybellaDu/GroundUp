@@ -101,6 +101,9 @@ def add_project_route():
         timeline = request.form.get('timeline')
         contact_email = request.form.get('contactEmail')
         status = request.form.get('status', 'active')
+        government = request.form.get('government')
+
+        print(name, description, budget, timeline, contact_email, status ,government)
         
         # Validate required fields
         if not name:
@@ -121,11 +124,15 @@ def add_project_route():
         project_id = add_project(
             name=name,
             description=description,
+            government=government,
             budget=budget,
             timeline=timeline,
             contact_email=contact_email,
             status=status
+            
         )
+
+        print('hi')
         
         return {
             'status': 'success', 
