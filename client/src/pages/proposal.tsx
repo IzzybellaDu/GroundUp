@@ -359,7 +359,7 @@ const ProposalForm = () => {
                             variant="outlined"
                         />
 
-                        <TextField
+                        {/* <TextField
                             fullWidth
                             label="Contact Email"
                             name="contactEmail"
@@ -368,7 +368,7 @@ const ProposalForm = () => {
                             onChange={handleChange}
                             required
                             variant="outlined"
-                        />
+                        /> */}
 
                         <FormControl fullWidth>
                             <InputLabel id="status-select-label">Project Status</InputLabel>

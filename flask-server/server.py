@@ -54,7 +54,7 @@ def register():
     username = request.form['username']
     password = request.form['password']
     confirm_password = request.form['confirm_password']
-    print(username, password, confirm_password)
+
     if confirm_password != password:
         return {'status': 'fail', 'message': 'Passwords do not match'}, 401 
     
@@ -98,19 +98,9 @@ def add_project_route():
         latitude = request.form.get('latitude')
         longitude = request.form.get('longitude')
         timeline = request.form.get('timeline')
-        contact_email = request.form.get('contactEmail')
+        contact_email = ''
         government = request.form.get('government')
         status = request.form.get('status', 'active')
-        
-        print(f"Received data:")
-        print(f"Title: {title}")
-        print(f"Description: {description}")
-        print(f"Type: {project_type}")
-        print(f"Urgency: {urgency}")
-        print(f"Concerns: {concerns}")
-        print(f"Location: {location} at {latitude}, {longitude}")
-        print(f"Timeline: {timeline}, Contact: {contact_email}")
-        print(f"Government: {government}, Status: {status}")
         
         # Validate required fields
         if not title:
