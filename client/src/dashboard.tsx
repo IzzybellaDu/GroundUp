@@ -6,6 +6,7 @@ import { Box, Button, InputLabel, MenuItem, FormControl, Select, SelectChangeEve
 import MapsUgcOutlinedIcon from '@mui/icons-material/MapsUgcOutlined';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import { useNavigate } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
 
 interface DashboardProps {
   // projects: Project[];
@@ -23,7 +24,18 @@ export default function Dashboard({ onProjectClick, onVote }: DashboardProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-
+  const Accbutton = styled(Button)(({ theme }) => ({
+        borderColor: 'black',
+        backgroundColor:'white',
+        color: 'black',
+        '&:hover': {
+            borderColor: 'black',
+            backgroundColor: 'rgba(0, 0, 0, 0.04)',
+        },
+        '&:focus': {
+            borderColor: 'black',
+        },
+    }));
   const handleProjectClick = (projectId: string) => {
     // Implement the actual logic here
     console.log(`Project clicked: ${projectId}`);
@@ -229,12 +241,12 @@ export default function Dashboard({ onProjectClick, onVote }: DashboardProps) {
       </Button>
     ) : (
       <Box sx={{ display: "flex", gap: 2 }}>
-        <Button variant="contained" sx={{ backgroundColor: "black" }} onClick={registerClick}>
+        <Accbutton variant="contained" onClick={registerClick}>
           Register
-        </Button>
-        <Button variant="contained" sx={{ backgroundColor: "black" }} onClick={loginClick}>
+        </Accbutton>
+        <Accbutton variant="contained" onClick={loginClick}>
           Login
-        </Button>
+        </Accbutton>
       </Box>
     )}
   </div>

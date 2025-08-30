@@ -2,6 +2,7 @@ import json
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from proposals import add_project, get_projects, DB_path
 from accounts import authenticate_and_get_user, create_account
+from comments import add_comment_to_db, get_comments_from_db
 from functools import wraps
 import sqlite3
 
@@ -190,5 +191,51 @@ def get_project_route(project_id):
         print(f'Error getting project: {str(e)}')
         return jsonify({'status': 'error', 'message': f'Server error: {str(e)}'}), 500
 
+@app.route('/api/comments', methods=['POST'])
+@login_required
+def add_comment():
+    try:
+        # Get form data - using correct field names from frontend
+        project_id = request.form.get('project_id')
+        name = request.form.get('name')
+        description = request.form.get('description')
+        
+        # Validate required fields
+        if not name:
+            return jsonify({'status': 'error', 'message': 'Name is required'}), 400
+        
+        if not description:
+            return jsonify({'status': 'error', 'message': 'Comment is required'}), 400
+        
+        add_comment_to_db(project_id, name, description)
+        print('Comment added successfully with ID: {project_id}')
+        
+        return jsonify({
+            'status': 'success',
+            'message': 'Comment added successfully',
+        }), 200
+        
+    except Exception as e:
+        print(f'Error adding comment: {str(e)}')
+        return jsonify({'status': 'error', 'message': f'Server error: {str(e)}'}), 500
+
+@app.route('/api/comments/<int:project_id>', methods=['GET'])
+def get_comments(project_id):
+    comments = get_comments_from_db(project_id)  # this runs your SELECT query
+
+    # Map tuples → dictionaries
+    comment_list = [
+        {
+            "id": row[0],
+            "project_id": row[1],
+            "name": row[2],
+            "description": row[3],
+            "createdAt": row[4]
+        }
+        for row in comments
+    ]
+
+    return jsonify({"status": "success", "project": comment_list}), 200
+    
 if __name__ == '__main__':
     app.run(debug=True)

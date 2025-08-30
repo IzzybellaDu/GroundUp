@@ -421,7 +421,7 @@ const ProposalForm = () => {
                             <BlackOutlinedButton variant="outlined" type="button" onClick={handleReset}>
                                 Reset
                             </BlackOutlinedButton>
-                            <Button variant="contained" sx={{ backgroundColor: "black" }} type="submit">
+                            <Button variant="contained" type="submit">
                                 Submit Proposal
                             </Button>
                             <BlackOutlinedButton
