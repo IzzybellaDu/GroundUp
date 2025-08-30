@@ -1,9 +1,19 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session
+from functools import wraps
 from proposals import *
 from accounts import *
 import sqlite3
 
 app =  Flask(__name__)
+app.secret_key = 'secret-key'
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            return {'status': 'fail', 'message': 'Authentication required'}, 401
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route('/')
 def index():
@@ -13,11 +23,30 @@ def index():
 def login():
     username = request.form['username']
     password = request.form['password']
-    result = authenticate(username, password)
-    if result:
+    
+    user = authenticate_and_get_user(username, password)
+    if user:
+        session['user_id'] = user[0]  
+        session['username'] = user[1]  
         return {'status': 'success', 'message': 'Login successful'}, 200
     else:
-        return {'status': 'fail', 'message': 'Incorrect username or password'}, 401  # Unauthorized
+        return {'status': 'fail', 'message': 'Incorrect username or password'}, 401
+    
+@app.route('/api/logout', methods=['POST'])
+def logout():
+    session.clear()
+    return {'status': 'success', 'message': 'Logged out successfully'}, 200
+
+@app.route('/api/auth-status', methods=['GET'])
+def auth_status():
+    if 'user_id' in session:
+        return {
+            'status': 'success', 
+            'authenticated': True,
+            'username': session.get('username')
+        }, 200
+    else:
+        return {'status': 'success', 'authenticated': False}, 200
     
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -36,6 +65,7 @@ def register():
 
 
 @app.route('/api/proposals', methods=['POST'])
+@login_required
 def add_project_route():
     try:
         # Get form data
