@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Project, PROJECT_TYPES } from './types';
 import * as styles from './dashboardStyle.ts';
 import ProjectModule from './projectModule.tsx';
-import { Button, InputLabel, MenuItem, FormControl, Select, SelectChangeEvent } from '@mui/material';
-
+import { Button, InputLabel, MenuItem, FormControl, Select, SelectChangeEvent, CircularProgress, Alert } from '@mui/material';
 import MapsUgcOutlinedIcon from '@mui/icons-material/MapsUgcOutlined';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
+import { useNavigate } from 'react-router-dom';
 
 interface DashboardProps {
   projects: Project[];
@@ -18,13 +18,37 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
   const [type, setType] = React.useState(''); // Default is All
   const [sort, setSort] = React.useState(''); // Default is sort by votes
   
+  // State for projects data
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const navigate = useNavigate();
+
+  const handleNewProject = () => {
+    navigate('/proposal');
+  };
+
   const changeType = (event: SelectChangeEvent) => {
-    setType(event.target.value);
+    setFilterType(event.target.value);
   };
-  
-  const changeSort = (event: SelectChangeEvent) => {
-    setSort(event.target.value)
-  };
+
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        setLoading(true);
+        const fetchedProjects = await fetchProjects();
+        setProjects(fetchedProjects);
+        setError(null);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load projects');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProjects();
+  }, []);
 
   const filteredProjects: Project[] = projects?.filter(project => 
     type === '' || project.type === type
@@ -44,6 +68,42 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
     }
   });
 
+  const refreshProjects = async () => {
+    try {
+      const fetchedProjects = await fetchProjects();
+      setProjects(fetchedProjects);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to refresh projects');
+    }
+  };
+
+  // fetch projects from backend
+  const fetchProjects = async (): Promise<Project[]> => {
+    try {
+      const response = await fetch('/api/proposals', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (data.status === 'success') {
+        return data.projects;
+      } else {
+        throw new Error(data.message || 'Failed to fetch projects');
+      }
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+      throw error;
+    }
+  };
+  
   return (
     <styles.MainBox>
       <styles.GlobalStyle />
@@ -53,7 +113,7 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
             <h1>City Projects</h1>
             <p>Your city. Your voice.</p>
           </div>
-          <Button variant="contained" startIcon={<MapsUgcOutlinedIcon />} sx={{ backgroundColor: "black" }}>
+          <Button variant="contained" startIcon={<MapsUgcOutlinedIcon />} sx={{ backgroundColor: "black" }} onClick={handleNewProject}>
             New Project
           </Button>
         </div>
@@ -65,7 +125,7 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
             <Select
               displayEmpty
               labelId="type-label"
-              value={type}
+              value={filterType}
               onChange={changeType}
             >
               <MenuItem value={""}>All Types</MenuItem>
@@ -81,7 +141,7 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
             <Select
               displayEmpty
               labelId="sort-label"
-              value={sort}
+              value={sortBy}
               onChange={changeSort}
             >
               <MenuItem value={""}>Most Votes</MenuItem>
@@ -90,11 +150,45 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
             </Select>
           </FormControl>
         </div>
-        
-        {sortedProjects.map((item) => (
-          <ProjectModule project={item}></ProjectModule>
-        ))}
       
+      {!loading && !error && (
+        <>
+          {sortedProjects.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '40px' }}>
+              <p>No projects found. Be the first to create one!</p>
+            </div>
+          ) : (
+            sortedProjects.map(project => (
+              <ProjectModule 
+                key={project.id}
+                project={project}
+
+              />
+//               {sortedProjects.map((item) => (
+//           <ProjectModule project={item}></ProjectModule>
+//         ))}
+            ))
+          )}
+        </>
+      )}
+      
+     {/* Loading state */}
+      {loading && (
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
+          <CircularProgress />
+        </div>
+      )}
+
+      {/* Error state */}
+      {error && (
+        <Alert severity="error" style={{ margin: '20px 0' }}>
+          {error}
+          <Button onClick={refreshProjects} style={{ marginLeft: '10px' }}>
+            Retry
+          </Button>
+        </Alert>
+      )}      
+
     </styles.MainBox>
   );
 }
