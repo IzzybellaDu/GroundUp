@@ -54,16 +54,16 @@ const ProposalForm = () => {
         }
     };
 
-    // creates a POST request to the add_project function
-    <form action="api/proposals" method="POST">
-    <input type="text" name="name" placeholder="Project Name" required></input>
-    <textarea name="description" placeholder="Description"></textarea>
-    <select name="status">
-        <option value="active">Active</option>
-        <option value="completed">Completed</option>
-    </select>
-    <button type="submit">Add Project</button>
-    </form>
+    // // creates a POST request to the add_project function
+    // <form action="api/proposals" method="POST">
+    // <input type="text" name="name" placeholder="Project Name" required></input>
+    // <textarea name="description" placeholder="Description"></textarea>
+    // <select name="status">
+    //     <option value="active">Active</option>
+    //     <option value="completed">Completed</option>
+    // </select>
+    // <button type="submit">Add Project</button>
+    // </form>
 
     const handleReset = () => {
         setFormData({
