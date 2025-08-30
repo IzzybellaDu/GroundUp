@@ -14,16 +14,14 @@ interface DashboardProps {
   onCreateClick: () => void;
 }
 
-export default function Dashboard({ onProjectClick, onVote, onCreateClick }: DashboardProps) {  
-
+export default function Dashboard({ projects, onProjectClick, onVote, onCreateClick }: DashboardProps) {
+  const [type, setType] = React.useState(''); // Default is All
+  const [sort, setSort] = React.useState(''); // Default is sort by votes
+  
   // State for projects data
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
-  // Filter and sort state
-  const [filterType, setFilterType] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<string>('votes');
 
   const navigate = useNavigate();
 
@@ -34,15 +32,6 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
   const changeType = (event: SelectChangeEvent) => {
     setFilterType(event.target.value);
   };
-  
-  const changeSort = (event: SelectChangeEvent) => {
-    setSortBy(event.target.value);
-  };
-
-  // Filter projects based on selected type
-  const filteredProjects = projects.filter(project => 
-    filterType === 'all' || project.type === filterType
-  );
 
   useEffect(() => {
     const loadProjects = async () => {
@@ -61,19 +50,13 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
     loadProjects();
   }, []);
 
-  const refreshProjects = async () => {
-    try {
-      const fetchedProjects = await fetchProjects();
-      setProjects(fetchedProjects);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to refresh projects');
-    }
-  };  
+  const filteredProjects: Project[] = projects?.filter(project => 
+    type === '' || project.type === type
+  );
 
-  // Sort filtered projects
   const sortedProjects = [...filteredProjects].sort((a, b) => {
-    switch (sortBy) {
-      case 'votes':
+    switch (sort) {
+      case '':
         return b.votes - a.votes;
       case 'recent':
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -84,6 +67,15 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
         return 0;
     }
   });
+
+  const refreshProjects = async () => {
+    try {
+      const fetchedProjects = await fetchProjects();
+      setProjects(fetchedProjects);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to refresh projects');
+    }
+  };
 
   // fetch projects from backend
   const fetchProjects = async (): Promise<Project[]> => {
@@ -136,11 +128,12 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
               value={filterType}
               onChange={changeType}
             >
-              <MenuItem value={"Environmental/sustainability"}>Environmental/Sustainability</MenuItem>
+              <MenuItem value={""}>All Types</MenuItem>
+              <MenuItem value={"Environmental/sustainability"}>Envrionmental/Sustainability</MenuItem>
               <MenuItem value={"Traffic"}>Traffic</MenuItem>
-              <MenuItem value={"Bike Lanes"}>Bike Lanes</MenuItem>
+              <MenuItem value={"Bike lanes"}>Bike Lanes</MenuItem>
               <MenuItem value={"Roads"}>Roads</MenuItem>
-              <MenuItem value={"Public Transport"}>Public Transport</MenuItem>
+              <MenuItem value={"Public transport"}>Public Transport</MenuItem>
             </Select>
           </FormControl>
           <FormControl variant="filled" sx={{ minWidth: 250, verticalAlign: "middle", padding: "0 10px" }} size="small" >
@@ -171,6 +164,9 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
                 project={project}
 
               />
+//               {sortedProjects.map((item) => (
+//           <ProjectModule project={item}></ProjectModule>
+//         ))}
             ))
           )}
         </>
