@@ -3,9 +3,6 @@ import sqlite3
 
 app =  Flask(__name__)
 
-# @app.route("/members")
-# def members():
-#     return {"members": ["Member1", "Member2", "Member3"]}
 DB_path = "./database.db"
 
 # Database setup
