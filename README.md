@@ -1,17 +1,30 @@
-# Full-Stack Web Application with React and Flask
+# XXX – Community Proposal Platform  
 
-This project is a full-stack web application with a React frontend and a Flask backend.
+A full-stack web application with a React frontend and a Flask backend, designed to give communities a voice in shaping the future of their cities.  
 
-## Prerequisites
+## Inspiration  
+
+We believe that cities of the future are built by those who live and interact with them daily. Despite government projects impacting communities each year and issues with city infrastructure, there are currently very few ways to provide meaningful input.  
+
+This inspired us to create **XXX**, a platform that allows residents to view, support, and propose projects that impact their neighborhoods. By making decision-making more transparent, communities can influence where taxpayer money is spent and ensure local priorities are heard.  
+
+## What It Does  
+
+- Browse current projects in various stages, from proposal to progress  
+- Filter projects based on **location** and **category**  
+- Upvote proposals to highlight initiatives that matter most to the community  
+- Suggest new proposals to be reviewed by the appropriate community or government body  
+
+## Getting Started  
+
+Follow these steps to run the application locally.
+
+###  Prerequisites
 
 Before you begin, ensure you have the following installed:
 
 *   [Python](https://www.python.org/downloads/)
-*   [Node.js and npm](https://nodejs.org/en/download/)
-
-## Getting Started
-
-To get the application up and running, follow these steps:
+*   [Node.js and npm](https://nodejs.org/en/download/)  
 
 ### 1. Set up the Flask Backend
 
