@@ -136,7 +136,7 @@ def add_project_route():
             lattitude=lattitude,
             longitude=longitude,
             votes=0
-        )c
+        )
         
         return {
             'status': 'success', 

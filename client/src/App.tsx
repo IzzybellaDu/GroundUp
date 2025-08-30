@@ -8,13 +8,14 @@ import ProjectPage from  "./pages/projectPage.tsx";
 export default function Home() {
   // const [data, setData] = useState([{}]);
   const navigate = useNavigate();
+  const proposalId = 1;
 
   function handleClick() {
     navigate("/proposal"); // navigate to Proposal page
   }
 
   function viewClick() {
-    navigate("/projectPage"); // navigate to Proposal page
+    navigate(`/project/${proposalId}`); // navigate to Proposal page
   }
 
   return (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   Box,
   Button,
@@ -22,18 +22,12 @@ interface Concern {
 }
 
 interface Project {
+  id: number;
   title: string;
   description: string;
   tags: string[];
   votes: number;
   concerns: Concern[];
-  benefits: string[];
-  summary: {
-    votes: number;
-    priority: string;
-    keyBenefits: number;
-    daysActive: number;
-  };
 }
 
 type LikeButtonProps = {
@@ -71,7 +65,6 @@ export function LikeButton({initialCount = 0, storageKey, onChange}: LikeButtonP
       startIcon={<ThumbUpIcon />}
       onClick={toggleLike}
       >
-      {liked ? "" : ""}
       </Button>
       <Typography sx={{ mt : 1 }}>{count} Upvotes</Typography>
     </div>
@@ -80,7 +73,9 @@ export function LikeButton({initialCount = 0, storageKey, onChange}: LikeButtonP
 
 
 export default function ProjectPage() {
+  const { id } = useParams<{ id: string}>(); 
   const [project, setProject] = useState<Project | null>(null);
+  const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
     const dummyData: Project = {
@@ -90,9 +85,8 @@ export default function ProjectPage() {
       tags: ["Government Initiative", "Accepted", "1/15/2024"],
       votes: 45,
       concerns: [
-        { icon: <InfoIcon />, label: "Budget", desc: "2 million" },
-        { icon: <AccessTimeIcon />, label: "Timeline", desc: "8 months" },
-        { icon: <EmailIcon />, label: "Contact Email", desc: "hello@hello.com" },
+        { icon: <InfoIcon />, label: "Budget", desc: "2" },
+        { icon: <AccessTimeIcon />, label: "Timeline", desc: "8" },
       ]
     };
     setProject(dummyData);

@@ -12,7 +12,7 @@ root.render(
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="/proposal" element={<ProposalForm></ProposalForm>}></Route>
-            <Route path="/projectpage" element={<ProjectPage></ProjectPage>}></Route>
+      <Route path="/project/:id" element={<ProjectPage></ProjectPage>}></Route> 
     </Routes>
   </BrowserRouter>  
   
