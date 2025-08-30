@@ -1,7 +1,14 @@
 import { Button, TextField, Container, Typography, Box } from '@mui/material';
 import React, { useState } from 'react';
+import {useNavigate} from "react-router-dom";
+import HomeIcon from '@mui/icons-material/Home';
 
 const RegisterForm = () => {
+    const navigate = useNavigate();
+
+    function navHome() {
+        navigate("/");
+    }
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -47,14 +54,6 @@ const RegisterForm = () => {
         }
     };
 
-    // creates a POST request to the add_project function
-    <form action="api/register" method="POST">
-    <input type="text" name="username" placeholder="Username" required></input>
-    <input type="password" name="password" placeholder="Password" required></input>
-    <input type="password" name="confirm_password" placeholder="Confirm Your Password" required></input>
-    <button type="submit">Register</button>
-    </form>
-
     const handleReset = () => {
         setFormData({
             username: '',
@@ -85,6 +84,7 @@ const RegisterForm = () => {
                             fullWidth
                             label="Password"
                             name="password"
+                            type="password"
                             value={formData.password}
                             onChange={handleChange}
                             required
@@ -95,18 +95,27 @@ const RegisterForm = () => {
                             fullWidth
                             label="Confirm Your Password"
                             name="confirm_password"
+                            type="password"
                             value={formData.confirm_password}
                             onChange={handleChange}
                             required
                             variant="outlined"
                         />
 
-                        <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+                        <Box sx={{display: 'inline-flex', justifyContent: 'space-between'}}>
+                            <Button variant="outlined" type="button" onClick={handleReset}>
+                                Reset
+                            </Button>                            
                             <Button variant="contained" type="submit">
                                 Register
                             </Button>
-                            <Button variant="outlined" type="button" onClick={handleReset}>
-                                Reset
+
+                            <Button
+                            variant="outlined"
+                            startIcon={<HomeIcon />} 
+                            onClick={() => navHome()} 
+                            >
+                            Home
                             </Button>
                         </Box>
                     </Box>
