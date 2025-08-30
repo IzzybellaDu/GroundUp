@@ -5,6 +5,7 @@ import ProjectModule from './projectModule.tsx';
 import { Button, InputLabel, MenuItem, FormControl, Select, SelectChangeEvent, CircularProgress, Alert } from '@mui/material';
 import MapsUgcOutlinedIcon from '@mui/icons-material/MapsUgcOutlined';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
+import { useNavigate } from 'react-router-dom';
 
 interface DashboardProps {
   projects: Project[];
@@ -15,7 +16,7 @@ interface DashboardProps {
 
 export default function Dashboard({ onProjectClick, onVote, onCreateClick }: DashboardProps) {  
 
-    // State for projects data
+  // State for projects data
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -23,6 +24,12 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
   // Filter and sort state
   const [filterType, setFilterType] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('votes');
+
+  const navigate = useNavigate();
+
+  const handleNewProject = () => {
+    navigate('/proposal');
+  };
 
   const changeType = (event: SelectChangeEvent) => {
     setFilterType(event.target.value);
@@ -53,7 +60,7 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
 
     loadProjects();
   }, []);
-  
+
   const refreshProjects = async () => {
     try {
       const fetchedProjects = await fetchProjects();
@@ -114,7 +121,7 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
             <h1>City Projects</h1>
             <p>Your city. Your voice.</p>
           </div>
-          <Button variant="contained" startIcon={<MapsUgcOutlinedIcon />} sx={{ backgroundColor: "black" }}>
+          <Button variant="contained" startIcon={<MapsUgcOutlinedIcon />} sx={{ backgroundColor: "black" }} onClick={handleNewProject}>
             New Project
           </Button>
         </div>
@@ -162,8 +169,7 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
               <ProjectModule 
                 key={project.id}
                 project={project}
-                // onClick={() => onProjectClick(project.id)}
-                // onVote={(voteType) => handleVote(project.id, voteType)}
+
               />
             ))
           )}
