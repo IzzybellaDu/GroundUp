@@ -1,5 +1,5 @@
 import { Button, TextField, Container, Typography, Box, FormControl, InputLabel, Select, MenuItem} from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LocationTextField from '../components/locationTextField.tsx';
 import {useNavigate} from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
@@ -65,6 +65,26 @@ const ProposalForm = () => {
     function navHome() {
         navigate("/");
     }
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const response = await fetch('/api/auth-status');
+                const data = await response.json();
+                
+                if (!data.authenticated) {
+                    alert('You must be logged in to create proposals');
+                    navigate('/login'); // Redirect to login
+                    return;
+                }
+            } catch (error) {
+                console.error('Auth check error:', error);
+                alert('Please log in to continue');
+                navigate('/login');
+            }
+        };
+        
+        checkAuth();
+    }, [navigate]);
 
     const [formData, setFormData] = useState<ProposalFormData>({
         title: '',
@@ -134,7 +154,13 @@ const ProposalForm = () => {
                 method: 'POST',
                 body: formDataObj
             });
-            
+
+            if (response.status === 401) {
+                alert('You must be logged in to submit proposals');
+                // Redirect to login page or show login form
+                return;
+            }
+
             if (response.ok) {
                 alert('Proposal submitted successfully!');
                 handleReset();
