@@ -1,10 +1,14 @@
-import { Button, TextField, Container, Typography, Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Button, TextField, Container, Typography, Box, FormControl, InputLabel, Select, MenuItem} from '@mui/material';
 import React, { useState } from 'react';
+import LocationTextField from '../components/locationTextField.tsx';
 
 const ProposalForm = () => {
     const [formData, setFormData] = useState({
         name: '',
         description: '',
+        location: '',
+        latitude: '',
+        longitude: '',
         budget: '',
         timeline: '',
         contactEmail: '',
@@ -25,7 +29,10 @@ const ProposalForm = () => {
         const formDataObj = new FormData();
         formDataObj.append('name', formData.name);
         formDataObj.append('description', formData.description);
-        formDataObj.append('status', 'active'); // Add default status to match Flask
+        formDataObj.append('location', formData.location);
+        formDataObj.append('lattitude', formData.latitude);
+        formDataObj.append('longitude', formData.longitude);
+        formDataObj.append('status', formData.status);
         // Optionally include additional fields if Flask is updated to handle them
         formDataObj.append('budget', formData.budget);
         formDataObj.append('timeline', formData.timeline);
@@ -42,6 +49,9 @@ const ProposalForm = () => {
                 setFormData({
                     name: '',
                     description: '',
+                    location: '',
+                    latitude: '',
+                    longitude: '',
                     budget: '',
                     timeline: '',
                     contactEmail: '',
@@ -74,6 +84,9 @@ const ProposalForm = () => {
         setFormData({
             name: '',
             description: '',
+            location: '',
+            latitude: '',
+            longitude: '',
             budget: '',
             timeline: '',
             contactEmail: '',
@@ -111,6 +124,12 @@ const ProposalForm = () => {
                             rows={4}
                             variant="outlined"
                         />
+
+                        <LocationTextField
+                            formData={formData}
+                            handleChange={handleChange}
+                            >
+                        </LocationTextField>             
 
                         <TextField
                             fullWidth

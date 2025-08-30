@@ -16,13 +16,15 @@ def init_projects_table():
             timeline INTEGER,
             contact_email TEXT,
             status TEXT,
+            lattitude DECIMAL,
+            longitude DECIMAL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
     conn.commit()
     conn.close()
 
-def add_project(name, description, government, budget=None, timeline=None, contact_email=None, status='active'):
+def add_project(name, description, government, budget=None, timeline=None, contact_email=None, status='active', lattitude=None, longitude=None):
     """Add a project with all the form fields"""
     init_projects_table()  # Creates table if it doesn't exist
     conn = sqlite3.connect(DB_path)
@@ -33,9 +35,9 @@ def add_project(name, description, government, budget=None, timeline=None, conta
     print(f"budget: {budget}, timeline: {timeline}, contact_email: {contact_email}, status: {status}")
     
     cursor.execute('''
-        INSERT INTO projects (name, description, government, budget, timeline, contact_email, status)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ''', (name, description, government, budget, timeline, contact_email, status))
+        INSERT INTO projects (name, description, government, budget, timeline, contact_email, status, lattitude, longitude)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (name, description, government, budget, timeline, contact_email, status, lattitude, longitude))
     
     project_id = cursor.lastrowid
     conn.commit()
