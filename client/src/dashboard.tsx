@@ -14,6 +14,7 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ onProjectClick, onVote }: DashboardProps) {
+
   const [type, setType] = React.useState(''); // Default is All
   const [sort, setSort] = React.useState(''); // Default is sort by votes
   
@@ -22,6 +23,14 @@ export default function Dashboard({ onProjectClick, onVote }: DashboardProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+
+  const handleProjectClick = (projectId: string) => {
+    // Implement the actual logic here
+    console.log(`Project clicked: ${projectId}`);
+    // Navigate to the project page
+    navigate(`/projects/${projectId}`);
+  };
+  
   const changeType = (event: SelectChangeEvent) => {
     setType(event.target.value);
   };
@@ -165,7 +174,7 @@ export default function Dashboard({ onProjectClick, onVote }: DashboardProps) {
               <ProjectModule 
                 key={project.id}
                 project={project}
-
+                onClick={() => handleProjectClick(project.id)}
               />
 //               {sortedProjects.map((item) => (
 //           <ProjectModule project={item}></ProjectModule>

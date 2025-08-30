@@ -11,7 +11,6 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import InfoIcon from "@mui/icons-material/Info";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import EmailIcon from '@mui/icons-material/Email';
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 
 // Define types for concerns and project
@@ -76,7 +75,6 @@ export function LikeButton({initialCount = 0, storageKey, onChange}: LikeButtonP
     </div>
   )
 }
-
 
 export default function ProjectPage() {
   const { id }  = useParams<{ id: string}>(); 
@@ -231,4 +229,4 @@ export default function ProjectPage() {
 
     </Box>
   );
-}``
+}

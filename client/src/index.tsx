@@ -26,7 +26,6 @@ root.render(
       } }></Dashboard>}></Route>
       <Route path="project/:id" element={<ProjectPage></ProjectPage>}></Route>
     </Routes>
-    
   </BrowserRouter>  
   
 );
