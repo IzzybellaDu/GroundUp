@@ -26,6 +26,7 @@ const LoginForm = () => {
                 method: 'POST',
                 body: formDataObj 
             });
+            const data = await response.json(); // Read the JSON response
             if (response.ok) {
                 alert('Logged in!');
                 setFormData({
@@ -35,7 +36,7 @@ const LoginForm = () => {
                 window.location.href = '/'; 
             } else {
                 console.error('Login failed:', response.statusText);
-                alert('Failed to login');
+                alert(data.message || 'Failed to login');
             }
         } catch (error) {
             console.error('Error logging in', error);
