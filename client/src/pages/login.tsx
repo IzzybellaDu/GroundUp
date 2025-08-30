@@ -91,6 +91,7 @@ const LoginForm = () => {
                             fullWidth
                             label="Password"
                             name="password"
+                            type="password"
                             value={formData.password}
                             onChange={handleChange}
                             required
