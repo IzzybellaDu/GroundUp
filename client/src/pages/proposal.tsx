@@ -370,6 +370,9 @@ const ProposalForm = () => {
                             onChange={handleChange}
                             required
                             variant="outlined"
+                            InputProps={{
+                                inputProps: { min: 1 }  // <-- correct way to pass min/max
+                            }}
                         />
 
                         {/* <TextField

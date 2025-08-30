@@ -150,6 +150,7 @@ export default function ProjectPage() {
     { icon: <InfoIcon />, label: "Votes", desc: project.votes?.toString() ?? "0" },
     { icon: <MonetizationOnIcon />, label: "Cost", desc: project.concerns?.cost ?? "N/A" },
     { icon: <AccessTimeIcon />, label: "Development Time", desc: project.concerns?.devTime ?? "N/A" }
+  ]
 
   return (
     <Box sx={{ p: 4, maxWidth: 900, mx: "auto" }}>
