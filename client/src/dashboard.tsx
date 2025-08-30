@@ -8,13 +8,12 @@ import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import { useNavigate } from 'react-router-dom';
 
 interface DashboardProps {
-  projects: Project[];
+  // projects: Project[];
   onProjectClick: (projectId: string) => void;
   onVote: (projectId: string, voteType: 'up' | 'down') => void;
-  onCreateClick: () => void;
 }
 
-export default function Dashboard({ onProjectClick, onVote, onCreateClick }: DashboardProps) {
+export default function Dashboard({ onProjectClick, onVote }: DashboardProps) {
   const [type, setType] = React.useState(''); // Default is All
   const [sort, setSort] = React.useState(''); // Default is sort by votes
   
