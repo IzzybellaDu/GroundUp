@@ -54,12 +54,3 @@ def create_account(username, password):
     conn.commit()
     conn.close()
     return (True, "")
-
-if __name__ == "__main__":
-    conn = sqlite3.connect(DB_path)
-    cursor = conn.cursor()
-    cursor.execute('''
-                  DROP TABLE users'''
-                  )
-    conn.commit()
-    conn.close()
