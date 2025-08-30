@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
-import Proposal from "./proposal";
+import Proposal from "./pages/proposal.tsx";
 
 function Home() {
   const [data, setData] = useState([{}]);
@@ -23,11 +23,7 @@ function Home() {
   return (
     <div>
       <Button variant="outlined" onClick={handleClick}>Go to Proposal</Button>
-      {typeof data.members === "undefined" ? (
-        <p>Loading...</p>
-      ) : (
-        data.members.map((member, i) => <p key={i}>{member}</p>)
-      )}
+      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
     </div>
   );
 }

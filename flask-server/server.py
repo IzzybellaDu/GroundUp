@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+from proposals import *
 import sqlite3
 
 app =  Flask(__name__)
@@ -52,11 +53,11 @@ def delete_user(id):
     conn.commit()
     conn.close()
 
-# Home page to list users and show form to add a new user
-@app.route('/')
-def index():
-    users = get_users()
-    return render_template('index.html',users=users)
+# # Home page to list users and show form to add a new user
+# @app.route('/')
+# def index():
+#     users = get_users()
+#     return render_template('index.html',users=users)
 
 # Add user via POST request
 @app.route('/add_user', methods=['POST'])
@@ -88,6 +89,22 @@ def update_user_route(id):
 def delete_user_route(id):
     delete_user(id)
     return redirect(url_for('index'))
+
+# Functions below are to add projects
+
+# Add to your Flask routes
+@app.route('/api/proposals', methods=['POST'])
+def add_project_route():
+    name = request.form['name']
+    description = request.form.get('description', '')
+    status = request.form.get('status', 'active')
+    add_project(name, description, status)
+    return redirect(url_for('index'))
+
+@app.route('/api/projects')
+def projects():
+    projects = get_projects()
+    return render_template('projects.html', projects=projects)
 
 if __name__ == '__main__':
     init_db()
