@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 const ProposalForm = () => {
     const [formData, setFormData] = useState({
-        title: '',
+        name: '',
         description: '',
         budget: '',
         timeline: '',
@@ -20,24 +20,33 @@ const ProposalForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const formDataObj = new FormData();
+        formDataObj.append('name', formData.name);
+        formDataObj.append('description', formData.description);
+        formDataObj.append('status', 'active'); // Add default status to match Flask
+        // Optionally include additional fields if Flask is updated to handle them
+        formDataObj.append('budget', formData.budget);
+        formDataObj.append('timeline', formData.timeline);
+        formDataObj.append('contactEmail', formData.contactEmail);
+
         try {
             const response = await fetch('/api/proposals', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
+                body: formDataObj // No headers needed; FormData sets Content-Type to multipart/form-data
             });
-            
             if (response.ok) {
                 alert('Proposal submitted successfully!');
                 setFormData({
-                    title: '',
+                    name: '',
                     description: '',
                     budget: '',
                     timeline: '',
                     contactEmail: ''
                 });
+                window.location.href = '/'; // Redirect to index, matching Flask's redirect
+            } else {
+                console.error('Submission failed:', response.statusText);
+                alert('Failed to submit proposal');
             }
         } catch (error) {
             console.error('Error submitting proposal:', error);
@@ -49,7 +58,6 @@ const ProposalForm = () => {
     <form action="api/proposals" method="POST">
     <input type="text" name="name" placeholder="Project Name" required></input>
     <textarea name="description" placeholder="Description"></textarea>
-    
     <select name="status">
         <option value="active">Active</option>
         <option value="completed">Completed</option>
@@ -59,7 +67,7 @@ const ProposalForm = () => {
 
     const handleReset = () => {
         setFormData({
-            title: '',
+            name: '',
             description: '',
             budget: '',
             timeline: '',
@@ -78,8 +86,8 @@ const ProposalForm = () => {
                         <TextField
                             fullWidth
                             label="Project Name"
-                            name="title"
-                            value={formData.title}
+                            name="name"
+                            value={formData.name}
                             onChange={handleChange}
                             required
                             variant="outlined"

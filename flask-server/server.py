@@ -54,10 +54,9 @@ def delete_user(id):
     conn.close()
 
 # # Home page to list users and show form to add a new user
-# @app.route('/')
-# def index():
-#     users = get_users()
-#     return render_template('index.html',users=users)
+@app.route('/')
+def index():
+    return render_template('/index.tsx')
 
 # Add user via POST request
 @app.route('/add_user', methods=['POST'])
@@ -99,7 +98,7 @@ def add_project_route():
     description = request.form.get('description', '')
     status = request.form.get('status', 'active')
     add_project(name, description, status)
-    return redirect(url_for('index'))
+    return {'status': 'success', 'message': 'Project added successfully'}, 201
 
 @app.route('/api/projects')
 def projects():
