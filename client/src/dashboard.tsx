@@ -8,42 +8,46 @@ import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import { useNavigate } from 'react-router-dom';
 
 interface DashboardProps {
-  projects: Project[];
+  // projects: Project[];
   onProjectClick: (projectId: string) => void;
   onVote: (projectId: string, voteType: 'up' | 'down') => void;
-  onCreateClick: () => void;
 }
 
-export default function Dashboard({ onProjectClick, onVote, onCreateClick }: DashboardProps) {  
-
+export default function Dashboard({ onProjectClick, onVote }: DashboardProps) {
+  const [type, setType] = React.useState(''); // Default is All
+  const [sort, setSort] = React.useState(''); // Default is sort by votes
+  
   // State for projects data
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
-  // Filter and sort state
-  const [filterType, setFilterType] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<string>('votes');
-
-  const navigate = useNavigate();
-
-  const handleNewProject = () => {
-    navigate('/proposal');
-  };
 
   const changeType = (event: SelectChangeEvent) => {
-    setFilterType(event.target.value);
+    setType(event.target.value);
   };
   
-  const changeSort = (event: SelectChangeEvent) => {
-    setSortBy(event.target.value);
+   const changeSort = (event: SelectChangeEvent) => {
+    setSort(event.target.value);
   };
-
-  // Filter projects based on selected type
-  const filteredProjects = projects.filter(project => 
-    filterType === 'all' || project.type === filterType
+  
+  const filteredProjects: Project[] = projects?.filter(project => 
+    type === '' || project.type === type
   );
 
+  const sortedProjects = [...filteredProjects].sort((a, b) => {
+    switch (sort) {
+      case '':
+        return b.votes - a.votes;
+      case 'recent':
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      case 'urgency':
+        const urgencyOrder = { 'High': 3, 'Medium': 2, 'Low': 1 };
+        return urgencyOrder[b.urgency] - urgencyOrder[a.urgency];
+      default:
+        return 0;
+    }
+  });
+  
   useEffect(() => {
     const loadProjects = async () => {
       try {
@@ -57,9 +61,15 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
         setLoading(false);
       }
     };
-
+    
     loadProjects();
   }, []);
+  
+  const navigate = useNavigate();
+
+  const handleNewProject = () => {
+    navigate('/proposal');
+  };
 
   const refreshProjects = async () => {
     try {
@@ -68,22 +78,7 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to refresh projects');
     }
-  };  
-
-  // Sort filtered projects
-  const sortedProjects = [...filteredProjects].sort((a, b) => {
-    switch (sortBy) {
-      case 'votes':
-        return b.votes - a.votes;
-      case 'recent':
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      case 'urgency':
-        const urgencyOrder = { 'High': 3, 'Medium': 2, 'Low': 1 };
-        return urgencyOrder[b.urgency] - urgencyOrder[a.urgency];
-      default:
-        return 0;
-    }
-  });
+  };
 
   // fetch projects from backend
   const fetchProjects = async (): Promise<Project[]> => {
@@ -133,14 +128,15 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
             <Select
               displayEmpty
               labelId="type-label"
-              value={filterType}
+              value={type}
               onChange={changeType}
             >
-              <MenuItem value={"Environmental/sustainability"}>Environmental/Sustainability</MenuItem>
+              <MenuItem value={""}>All Types</MenuItem>
+              <MenuItem value={"Environmental/sustainability"}>Envrionmental/Sustainability</MenuItem>
               <MenuItem value={"Traffic"}>Traffic</MenuItem>
-              <MenuItem value={"Bike Lanes"}>Bike Lanes</MenuItem>
+              <MenuItem value={"Bike lanes"}>Bike Lanes</MenuItem>
               <MenuItem value={"Roads"}>Roads</MenuItem>
-              <MenuItem value={"Public Transport"}>Public Transport</MenuItem>
+              <MenuItem value={"Public transport"}>Public Transport</MenuItem>
             </Select>
           </FormControl>
           <FormControl variant="filled" sx={{ minWidth: 250, verticalAlign: "middle", padding: "0 10px" }} size="small" >
@@ -148,7 +144,7 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
             <Select
               displayEmpty
               labelId="sort-label"
-              value={sortBy}
+              value={sort}
               onChange={changeSort}
             >
               <MenuItem value={""}>Most Votes</MenuItem>
@@ -171,6 +167,9 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
                 project={project}
 
               />
+//               {sortedProjects.map((item) => (
+//           <ProjectModule project={item}></ProjectModule>
+//         ))}
             ))
           )}
         </>
