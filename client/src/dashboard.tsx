@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Project, PROJECT_TYPES } from './types';
 import * as styles from './dashboardStyle.ts';
 import ProjectModule from './projectModule.tsx';
-import { Button, InputLabel, MenuItem, FormControl, Select, SelectChangeEvent } from '@mui/material';
+import { Button, InputLabel, MenuItem, FormControl, Select, SelectChangeEvent, CircularProgress, Alert } from '@mui/material';
 import MapsUgcOutlinedIcon from '@mui/icons-material/MapsUgcOutlined';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 
@@ -53,6 +53,15 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
 
     loadProjects();
   }, []);
+  
+  const refreshProjects = async () => {
+    try {
+      const fetchedProjects = await fetchProjects();
+      setProjects(fetchedProjects);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to refresh projects');
+    }
+  };  
 
   // Sort filtered projects
   const sortedProjects = [...filteredProjects].sort((a, b) => {
@@ -96,48 +105,6 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
     }
   };
   
-  const testObj: Project = {
-    id: "test",
-    description: "Hi there this is a descirption awjdoiawjdo awjodj aoiwj doiawj doiajw odijaowdj oiawj doja woidjoawj diojawodjoaiwj dioaj wodijoiwadj oiawj doiawjodij",
-    title: "test",
-    type: "Environmental/sustainability",
-    votes: 50,
-    userVote: null,
-    concerns: {
-      cost: "500 milly",
-      devTime: "long",
-      environmentalImpact: "bad :(",
-      safety: "not safe",
-      infrastructure: "yeah",
-      community: "yeah"
-    },
-    likes: [],
-    urgency: "High",
-    createdAt: "December"
-  };
-
-  
-  // const [filterType, setFilterType] = useState<string>('all');
-  // const [sortBy, setSortBy] = useState<string>('votes');
-
-  // const filteredProjects = projects?.filter(project => 
-  //   filterType === 'all' || project.type === filterType
-  // );
-
-  // const sortedProjects = [...filteredProjects].sort((a, b) => {
-  //   switch (sortBy) {
-  //     case 'votes':
-  //       return b.votes - a.votes;
-  //     case 'recent':
-  //       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-  //     case 'urgency':
-  //       const urgencyOrder = { 'High': 3, 'Medium': 2, 'Low': 1 };
-  //       return urgencyOrder[b.urgency] - urgencyOrder[a.urgency];
-  //     default:
-  //       return 0;
-  //   }
-  // });
-
   return (
     <styles.MainBox>
       <styles.GlobalStyle />
@@ -183,11 +150,6 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
             </Select>
           </FormControl>
         </div>
-        
-        {/* <ProjectModule project={testObj} />
-        <ProjectModule project={testObj} />
-        <ProjectModule project={testObj} />
-        <ProjectModule project={testObj} /> */}
       
       {!loading && !error && (
         <>
@@ -207,6 +169,23 @@ export default function Dashboard({ onProjectClick, onVote, onCreateClick }: Das
           )}
         </>
       )}
+      
+     {/* Loading state */}
+      {loading && (
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
+          <CircularProgress />
+        </div>
+      )}
+
+      {/* Error state */}
+      {error && (
+        <Alert severity="error" style={{ margin: '20px 0' }}>
+          {error}
+          <Button onClick={refreshProjects} style={{ marginLeft: '10px' }}>
+            Retry
+          </Button>
+        </Alert>
+      )}      
 
     </styles.MainBox>
   );
