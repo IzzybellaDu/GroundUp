@@ -1,39 +1,141 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
+import {
+  Box,
+  Button,
+  Chip,
+  Typography,
+  Paper,
+  Divider,
+  Grid,
+} from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import InfoIcon from "@mui/icons-material/Info";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+
+import SafetyCheckIcon from "@mui/icons-material/SafetyCheck";
+import ConstructionIcon from "@mui/icons-material/Construction";
+import GroupIcon from "@mui/icons-material/Group";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 
 export default function ProjectPage() {
-  // Dummy project data
   const [project, setProject] = useState(null);
 
   useEffect(() => {
-    // Simulate fetching from a database
     const dummyData = {
-      concerns: "Budget constraints, timeline risks, and resource limitations.",
-      benefits: "Improved efficiency, better customer satisfaction, and cost savings.",
-      summary: "This project is focused on modernising operations to achieve long-term sustainability."
+      title: "Green Community Park",
+      description:
+        "Transform the vacant lot on Maple Street into a sustainable community park with native plants, solar lighting, and rainwater collection systems.",
+      tags: ["Environmental/Sustainability", "Medium Priority", "1/15/2024"],
+      votes: 45,
+      concerns: [
+        { icon: <InfoIcon />, label: "Cost", desc: "High initial investment (~$150k)" },
+        { icon: <AccessTimeIcon />, label: "Development Time", desc: "8-12 months" },
+        { icon: <InfoIcon />, label: "Environmental Impact", desc: "Positive - native plants, carbon sequestration" },
+        { icon: <SafetyCheckIcon />, label: "Safety", desc: "Improved lighting and visibility" },
+        { icon: <ConstructionIcon />, label: "Infrastructure", desc: "New pathways and utilities needed" },
+        { icon: <GroupIcon />, label: "Community", desc: "Strong neighborhood support" },
+      ],
+      benefits: [
+        "Creates green space for families",
+        "Educational opportunities for children",
+        "Improves air quality",
+        "Gathering place for community events",
+      ],
+      summary: {
+        votes: 45,
+        priority: "Medium",
+        keyBenefits: 4,
+        daysActive: 594,
+      },
     };
-
-    // mimic async load
-    setTimeout(() => setProject(dummyData), 500);
+    setProject(dummyData);
   }, []);
 
-  if (!project) return <p>Loading...</p>;
+  if (!project) return <Typography sx={{ mt: 4, textAlign: "center" }}>Loading...</Typography>;
 
   return (
-    <div className="p-6 space-y-6 max-w-3xl mx-auto">
-      <section className="bg-red-100 p-6 rounded-2xl shadow">
-        <h2 className="text-xl font-bold mb-2">Project Concerns / Considerations</h2>
-        <p>{project.concerns}</p>
-      </section>
+    <Box sx={{ p: 4, maxWidth: 900, mx: "auto" }}>
+      {/* Back button */}
+      <Button component={Link}
+  to="/"
+  startIcon={<ArrowBackIcon />}
+  sx={{ mb: 3 }}>
+        Back to Projects
+      </Button>
 
-      <section className="bg-green-100 p-6 rounded-2xl shadow">
-        <h2 className="text-xl font-bold mb-2">Project Benefits</h2>
-        <p>{project.benefits}</p>
-      </section>
+      {/* Project Header */}
+      <Paper sx={{ p: 3, mb: 3 }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+          <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+            {project.tags.map((tag, i) => (
+              <Chip key={i} label={tag} size="small" />
+            ))}
+          </Box>
+          <Box sx={{ textAlign: "center" }}>
+            <ThumbUpIcon />
+            <Typography>{project.votes}</Typography>
+          </Box>
+        </Box>
+        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1 }}>
+          {project.title}
+        </Typography>
+        <Typography color="text.secondary">{project.description}</Typography>
+      </Paper>
 
-      <section className="bg-blue-100 p-6 rounded-2xl shadow">
-        <h2 className="text-xl font-bold mb-2">Project Summary</h2>
-        <p>{project.summary}</p>
-      </section>
-    </div>
+      {/* Project Concerns */}
+      <Paper sx={{ p: 3, mb: 3 }}>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+          Project Concerns & Considerations
+        </Typography>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+          {project.concerns.map((c, i) => (
+            <Box key={i} sx={{ display: "flex", alignItems: "center", p: 1, borderRadius: 1, backgroundColor: "#f5f5f5" }}>
+              {c.icon}
+              <Box sx={{ ml: 1 }}>
+                <Typography sx={{ fontWeight: 500 }}>{c.label}</Typography>
+                <Typography variant="body2" color="text.secondary">{c.desc}</Typography>
+              </Box>
+            </Box>
+          ))}
+        </Box>
+      </Paper>
+
+      {/* Project Benefits */}
+      <Paper sx={{ p: 3, mb: 3 }}>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+          Project Benefits
+        </Typography>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+          {project.benefits.map((b, i) => (
+            <Box key={i} sx={{ p: 1, borderRadius: 1, backgroundColor: "#e6f4ea" }}>
+              <Typography>{b}</Typography>
+            </Box>
+          ))}
+        </Box>
+      </Paper>
+
+      {/* Project Summary */}
+      <Paper sx={{ p: 3 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={6} sm={3}>
+            <Typography sx={{ fontWeight: 500 }}>Community Votes</Typography>
+            <Typography>{project.summary.votes}</Typography>
+          </Grid>
+          <Grid item xs={6} sm={3}>
+            <Typography sx={{ fontWeight: 500 }}>Priority Level</Typography>
+            <Typography>{project.summary.priority}</Typography>
+          </Grid>
+          <Grid item xs={6} sm={3}>
+            <Typography sx={{ fontWeight: 500 }}>Key Benefits</Typography>
+            <Typography>{project.summary.keyBenefits}</Typography>
+          </Grid>
+          <Grid item xs={6} sm={3}>
+            <Typography sx={{ fontWeight: 500 }}>Days Active</Typography>
+            <Typography>{project.summary.daysActive}</Typography>
+          </Grid>
+        </Grid>
+      </Paper>
+    </Box>
   );
 }
