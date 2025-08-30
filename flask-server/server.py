@@ -102,8 +102,12 @@ def add_project_route():
         contact_email = request.form.get('contactEmail')
         status = request.form.get('status', 'active')
         government = request.form.get('government')
+        location = request.form.get('location')
+        lattitude = request.form.get('lattitude')
+        longitude = request.form.get('longitude')
 
         print(name, description, budget, timeline, contact_email, status ,government)
+        print(f'Location summary data {location} at {lattitude} and {longitude}')
         
         # Validate required fields
         if not name:
@@ -128,8 +132,9 @@ def add_project_route():
             budget=budget,
             timeline=timeline,
             contact_email=contact_email,
-            status=status
-            
+            status=status,
+            lattitude=lattitude,
+            longitude=longitude
         )
 
         print('hi')
