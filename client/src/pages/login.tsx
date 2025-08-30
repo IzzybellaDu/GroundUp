@@ -24,7 +24,7 @@ const LoginForm = () => {
         try {
             const response = await fetch('/api/login', {
                 method: 'POST',
-                body: formDataObj // No headers needed; FormData sets Content-Type to multipart/form-data
+                body: formDataObj 
             });
             if (response.ok) {
                 alert('Logged in!');
@@ -32,7 +32,7 @@ const LoginForm = () => {
                     username: '',
                     password: ''
                 });
-                window.location.href = '/'; // Redirect to index, matching Flask's redirect
+                window.location.href = '/'; 
             } else {
                 console.error('Login failed:', response.statusText);
                 alert('Failed to login');
