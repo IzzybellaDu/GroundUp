@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask CRUD App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #4CAF50;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .user-list {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .user-list li {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-list li a {
+            text-decoration: none;
+            color: #007BFF;
+            padding: 5px 10px;
+            margin: 0 5px;
+        }
+
+        .user-list li a:hover {
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .delete-link {
+            color: #FF5722;
+        }
+
+        .delete-link:hover {
+            background-color: #FF5722;
+            color: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Management</h1>
+
+        <h2>Add New User</h2>
+        <form action="/add_user" method="POST">
+            <input type="text" id="name" name="name" placeholder="Enter Name" required>
+            <input type="number" id="age" name="age" placeholder="Enter Age" required>
+            <button type="submit">Add User</button>
+        </form>
+
+        <h2>Users List</h2>
+        <ul class="user-list">
+            {% for user in users %}
+                <li>
+                    <span>{{ user[1] }} (Age: {{ user[2] }})</span>
+                    <div>
+                        <a href="{{ url_for('update_user_route', id=user[0]) }}">Edit</a>
+                        <a href="{{ url_for('delete_user_route', id=user[0]) }}" class="delete-link">Delete</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
