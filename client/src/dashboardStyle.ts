@@ -1,15 +1,20 @@
 import styled, { createGlobalStyle } from 'styled-components';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 
 export const GlobalStyle = createGlobalStyle`
     h1 {
-        font-family: Helvetica;
+        font-family: Roboto;
         font-size: 30px;
         font-weight: normal;
         vertical-align: middle;
     }
     
     p {
-        font-family: Helvetica;
+        font-family: Roboto;
         font-size: 15px;
         color: gray;
         vertical-align: middle;
@@ -36,7 +41,7 @@ export const GlobalStyle = createGlobalStyle`
     }
         
     h2 {
-        font-family: Helvetica;
+        font-family: Roboto;
         margin-top: -35px;
         margin-bottom: -7px;
     }
@@ -50,13 +55,13 @@ export const GlobalStyle = createGlobalStyle`
     }
         
     .votes {
-        font-family: Helvetica;
+        font-family: Roboto;
     }
         
     .details {
         display: flex;
         flex-direction: row;
-        font-family: Helvetica;
+        font-family: Roboto;
         font-size: 13px;
         margin-bottom: 15px;
     }
@@ -82,7 +87,7 @@ export const Tag = styled.div<TagProps>`
     background-color: ${props => props.backgroundColor || "white"};
     color: ${props => props.color || "black"};
     display: inline-block;
-    font-family: Helvetica;
+    font-family: Roboto;
     border-radius: 10px;
     padding: 5px;
     margin-top: 15px;

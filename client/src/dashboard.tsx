@@ -15,8 +15,8 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ projects, onProjectClick, onVote, onCreateClick }: DashboardProps) {
-  const [type, setType] = React.useState('');
-  const [sort, setSort] = React.useState('');
+  const [type, setType] = React.useState(''); // Default is All
+  const [sort, setSort] = React.useState(''); // Default is sort by votes
   
   const changeType = (event: SelectChangeEvent) => {
     setType(event.target.value);
@@ -25,47 +25,24 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
   const changeSort = (event: SelectChangeEvent) => {
     setSort(event.target.value)
   };
-  
-  const testObj: Project = {
-    id: "test",
-    description: "Hi there this is a descirption awjdoiawjdo awjodj aoiwj doiawj doiajw odijaowdj oiawj doja woidjoawj diojawodjoaiwj dioaj wodijoiwadj oiawj doiawjodij",
-    title: "test",
-    type: "Public transport",
-    votes: 50,
-    userVote: null,
-    concerns: {
-      cost: "500 milly",
-      devTime: "long",
-      environmentalImpact: "bad :(",
-      safety: "not safe",
-      infrastructure: "yeah",
-      community: "yeah"
-    },
-    likes: [],
-    urgency: "Low",
-    createdAt: "December"
-  };
-  
-  const [filterType, setFilterType] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<string>('votes');
 
-  const filteredProjects = projects?.filter(project => 
-    filterType === 'all' || project.type === filterType
+  const filteredProjects: Project[] = projects?.filter(project => 
+    type === '' || project.type === type
   );
 
-  // const sortedProjects = [...filteredProjects].sort((a, b) => {
-  //   switch (sortBy) {
-  //     case 'votes':
-  //       return b.votes - a.votes;
-  //     case 'recent':
-  //       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-  //     case 'urgency':
-  //       const urgencyOrder = { 'High': 3, 'Medium': 2, 'Low': 1 };
-  //       return urgencyOrder[b.urgency] - urgencyOrder[a.urgency];
-  //     default:
-  //       return 0;
-  //   }
-  // });
+  const sortedProjects = [...filteredProjects].sort((a, b) => {
+    switch (sort) {
+      case '':
+        return b.votes - a.votes;
+      case 'recent':
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      case 'urgency':
+        const urgencyOrder = { 'High': 3, 'Medium': 2, 'Low': 1 };
+        return urgencyOrder[b.urgency] - urgencyOrder[a.urgency];
+      default:
+        return 0;
+    }
+  });
 
   return (
     <styles.MainBox>
@@ -92,11 +69,11 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
               onChange={changeType}
             >
               <MenuItem value={""}>All Types</MenuItem>
-              <MenuItem value={"env"}>Envrionmental/Sustainability</MenuItem>
-              <MenuItem value={"traffic"}>Traffic</MenuItem>
-              <MenuItem value={"bike"}>Bike Lanes</MenuItem>
-              <MenuItem value={"road"}>Roads</MenuItem>
-              <MenuItem value={"pt"}>Public Transport</MenuItem>
+              <MenuItem value={"Environmental/sustainability"}>Envrionmental/Sustainability</MenuItem>
+              <MenuItem value={"Traffic"}>Traffic</MenuItem>
+              <MenuItem value={"Bike lanes"}>Bike Lanes</MenuItem>
+              <MenuItem value={"Roads"}>Roads</MenuItem>
+              <MenuItem value={"Public transport"}>Public Transport</MenuItem>
             </Select>
           </FormControl>
           <FormControl variant="filled" sx={{ minWidth: 250, verticalAlign: "middle", padding: "0 10px" }} size="small" >
@@ -114,10 +91,9 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
           </FormControl>
         </div>
         
-        <ProjectModule project={testObj} />
-        <ProjectModule project={testObj} />
-        <ProjectModule project={testObj} />
-        <ProjectModule project={testObj} />
+        {sortedProjects.map((item) => (
+          <ProjectModule project={item}></ProjectModule>
+        ))}
       
     </styles.MainBox>
   );

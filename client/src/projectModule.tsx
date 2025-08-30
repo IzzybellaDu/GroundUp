@@ -20,7 +20,7 @@ export default function ProjectModule({ project }: { project: Project }) {
   const getUrgencyColor = (urgency: string) => {
     switch (urgency) {
       case 'High': return { backgroundColor: "#000000ff", color: "#ffffffff" };
-      case 'Medium': return { backgroundColor: "#393939ff", color: "#ffffffff" };
+      case 'Medium': return { backgroundColor: "#484848ff", color: "#ffffffff" };
       case 'Low': return { backgroundColor: "#6b6b6bff", color: "#ffffffff" };
       default: return { backgroundColor: "black", color: "white" };
     }
