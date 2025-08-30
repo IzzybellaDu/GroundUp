@@ -7,6 +7,7 @@ import ProposalForm from './pages/proposal.tsx'; // Your form component
 import LoginForm from './pages/login.tsx';
 import RegisterForm from './pages/register.tsx';
 import Dashboard from './dashboard.tsx';
+import ProjectPage from './pages/projectPage.tsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -23,7 +24,9 @@ root.render(
       } } onCreateClick={function (): void {
         throw new Error('Function not implemented.');
       } }></Dashboard>}></Route>
+      <Route path="project/:id" element={<ProjectPage></ProjectPage>}></Route>
     </Routes>
+    
   </BrowserRouter>  
   
 );
