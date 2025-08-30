@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+from proposals import *
 import sqlite3
 
 app =  Flask(__name__)
@@ -52,11 +53,10 @@ def delete_user(id):
     conn.commit()
     conn.close()
 
-# Home page to list users and show form to add a new user
+# # Home page to list users and show form to add a new user
 @app.route('/')
 def index():
-    users = get_users()
-    return render_template('index.html',users=users)
+    return render_template('/index.tsx')
 
 # Add user via POST request
 @app.route('/add_user', methods=['POST'])
@@ -89,6 +89,69 @@ def delete_user_route(id):
     delete_user(id)
     return redirect(url_for('index'))
 
+# Functions below are to add projects
+
+@app.route('/api/proposals', methods=['POST'])
+def add_project_route():
+    try:
+        # Get form data
+        name = request.form.get('name')
+        description = request.form.get('description', '')
+        budget = request.form.get('budget')
+        timeline = request.form.get('timeline')
+        contact_email = request.form.get('contactEmail')
+        status = request.form.get('status', 'active')
+        government = request.form.get('government')
+
+        print(name, description, budget, timeline, contact_email, status ,government)
+        
+        # Validate required fields
+        if not name:
+            return {'status': 'error', 'message': 'Project name is required'}, 400
+        
+        # Convert numeric fields
+        try:
+            budget = float(budget) if budget else None
+        except (ValueError, TypeError):
+            budget = None
+            
+        try:
+            timeline = int(timeline) if timeline else None
+        except (ValueError, TypeError):
+            timeline = None
+        
+        # Add project to database
+        project_id = add_project(
+            name=name,
+            description=description,
+            government=government,
+            budget=budget,
+            timeline=timeline,
+            contact_email=contact_email,
+            status=status
+            
+        )
+
+        print('hi')
+        
+        return {
+            'status': 'success', 
+            'message': 'Project added successfully',
+            'project_id': project_id
+        }, 201
+        
+    except Exception as e:
+        return {'status': 'error', 'message': f'Server error: {str(e)}'}, 500
+
+@app.route('/api/proposals', methods=['GET'])
+def get_projects_route():
+    """Get all projects"""
+    try:
+        projects = get_projects()
+        return {'status': 'success', 'projects': projects}, 200
+    except Exception as e:
+        return {'status': 'error', 'message': f'Server error: {str(e)}'}, 500
+
+
 if __name__ == '__main__':
-    init_db()
     app.run(debug=True)
