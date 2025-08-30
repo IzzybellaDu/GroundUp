@@ -532,8 +532,11 @@ export default function ProjectPage() {
               {/* <Chip key={3} label={project.created_at} size="small" /> */}
             </Box>
           </Box>
-        </Box>
-
+          <LikeButton 
+            initialCount={project.votes || 0}
+            storageKey={`project-${project.id}-liked`}
+          />
+      </Box>
         <Typography color="text.secondary">{project.description}</Typography>
       </Paper>
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { MapPin } from "lucide-react"; // make sure you have this import
+import { MapPin } from "lucide-react";
+import { Box, Typography, Paper } from "@mui/material";
 
 interface MapViewProps {
   latittude: number;
@@ -53,41 +54,37 @@ export default function MapView({ latittude, longitude, projectName }: MapViewPr
     if (!latittude || !longitude || isNaN(latittude) || isNaN(longitude)) {
         
         return (
-            
-            <div className="bg-white rounded-lg border border-gray-200 p-4">
-                <div className="flex items-center gap-2">
-                    <MapPin className="w-5 h-5 text-gray-400" />
-                    <h3 className="font-semibold text-gray-900">Project Location</h3>
-                </div>
-                <p className="text-sm text-gray-600 mt-2">Location could not be displayed</p>
-            </div>
-            
-
+          <Paper sx={{ p: 3 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <MapPin size={20} color="#9e9e9e" />
+              <Typography variant="h6" sx={{ fontWeight: 600 }}>Project Location</Typography>
+            </Box>
+            <Typography color="text.secondary" sx={{ mt: 1 }}>Location could not be displayed</Typography>
+          </Paper>
         );
     }
     
     return (
-        
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-            <div className="p-4 border-b border-gray-100">
-                <div className="flex items-center gap-2 mb-2">
-                    <MapPin className="w-5 h-5 text-blue-600" />
-                    <h3 className="font-semibold text-gray-900">Project Location</h3>
-                </div>
-                <p className="text-sm text-gray-600">{locationName}</p>
-                <p className="text-xs text-gray-400 mt-1">
-                    Coordinates: {latittude}, {longitude}
-                </p>
-            </div>
-            <div className="h-128"> {/* Changed from h-64 to h-128 (2x height) */}
-                <iframe
-                    src={mapUrl}
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    title={`Map showing location of ${projectName}`}
-                />
-            </div>
-        </div>
-    );
+    <Paper sx={{ mb: 3, overflow: "hidden" }}>
+      <Box sx={{ p: 3, borderBottom: 1, borderColor: "divider" }}> 
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}> 
+          <MapPin size={20} color="#1976d2" /> 
+          <Typography variant="h6" sx={{ fontWeight: 600 }}>Project Location</Typography>
+        </Box>
+        <Typography color="text.secondary">{locationName}</Typography> 
+        <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>
+          Coordinates: {latittude}, {longitude}
+        </Typography>
+      </Box>
+      <Box sx={{ height: 400 }}>
+        <iframe
+          src={mapUrl}
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          title={`Map showing location of ${projectName}`}
+        />
+      </Box>
+    </Paper>
+  );
     }
