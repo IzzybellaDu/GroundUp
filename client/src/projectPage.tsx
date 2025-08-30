@@ -1,28 +1,48 @@
-import React, { useState, useEffect } from "react";
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, ReactNode } from "react";
+import { Link } from "react-router-dom";
 import {
   Box,
   Button,
   Chip,
   Typography,
   Paper,
-  Divider,
   Grid,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import InfoIcon from "@mui/icons-material/Info";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-
 import SafetyCheckIcon from "@mui/icons-material/SafetyCheck";
 import ConstructionIcon from "@mui/icons-material/Construction";
 import GroupIcon from "@mui/icons-material/Group";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 
+// Define types for concerns and project
+interface Concern {
+  icon: ReactNode;
+  label: string;
+  desc: string;
+}
+
+interface Project {
+  title: string;
+  description: string;
+  tags: string[];
+  votes: number;
+  concerns: Concern[];
+  benefits: string[];
+  summary: {
+    votes: number;
+    priority: string;
+    keyBenefits: number;
+    daysActive: number;
+  };
+}
+
 export default function ProjectPage() {
-  const [project, setProject] = useState(null);
+  const [project, setProject] = useState<Project | null>(null);
 
   useEffect(() => {
-    const dummyData = {
+    const dummyData: Project = {
       title: "Green Community Park",
       description:
         "Transform the vacant lot on Maple Street into a sustainable community park with native plants, solar lighting, and rainwater collection systems.",
@@ -57,10 +77,12 @@ export default function ProjectPage() {
   return (
     <Box sx={{ p: 4, maxWidth: 900, mx: "auto" }}>
       {/* Back button */}
-      <Button component={Link}
-  to="/"
-  startIcon={<ArrowBackIcon />}
-  sx={{ mb: 3 }}>
+      <Button
+        component={Link}
+        to="/"
+        startIcon={<ArrowBackIcon />}
+        sx={{ mb: 3 }}
+      >
         Back to Projects
       </Button>
 
@@ -90,7 +112,10 @@ export default function ProjectPage() {
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           {project.concerns.map((c, i) => (
-            <Box key={i} sx={{ display: "flex", alignItems: "center", p: 1, borderRadius: 1, backgroundColor: "#f5f5f5" }}>
+            <Box
+              key={i}
+              sx={{ display: "flex", alignItems: "center", p: 1, borderRadius: 1, backgroundColor: "#f5f5f5" }}
+            >
               {c.icon}
               <Box sx={{ ml: 1 }}>
                 <Typography sx={{ fontWeight: 500 }}>{c.label}</Typography>

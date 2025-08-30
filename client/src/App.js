@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import Proposal from "./proposal";
-import ProjectPage from "./projectPage.jsx";
+import ProjectPage from "./projectPage.tsx";
 
 function Home() {
   const [data, setData] = useState([{}]);
