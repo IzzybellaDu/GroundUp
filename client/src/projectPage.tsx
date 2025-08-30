@@ -41,36 +41,76 @@ interface Project {
 export default function ProjectPage() {
   const [project, setProject] = useState<Project | null>(null);
 
+  // useEffect(() => {
+  //   const dummyData: Project = {
+  //     title: "Green Community Park",
+  //     description:
+  //       "Transform the vacant lot on Maple Street into a sustainable community park with native plants, solar lighting, and rainwater collection systems.",
+  //     tags: ["Environmental/Sustainability", "Medium Priority", "1/15/2024"],
+  //     votes: 45,
+  //     concerns: [
+  //       { icon: <InfoIcon />, label: "Cost", desc: "High initial investment (~$150k)" },
+  //       { icon: <AccessTimeIcon />, label: "Development Time", desc: "8-12 months" },
+  //       { icon: <InfoIcon />, label: "Environmental Impact", desc: "Positive - native plants, carbon sequestration" },
+  //       { icon: <SafetyCheckIcon />, label: "Safety", desc: "Improved lighting and visibility" },
+  //       { icon: <ConstructionIcon />, label: "Infrastructure", desc: "New pathways and utilities needed" },
+  //       { icon: <GroupIcon />, label: "Community", desc: "Strong neighborhood support" },
+  //     ],
+  //     benefits: [
+  //       "Creates green space for families",
+  //       "Educational opportunities for children",
+  //       "Improves air quality",
+  //       "Gathering place for community events",
+  //     ],
+  //     summary: {
+  //       votes: 45,
+  //       priority: "Medium",
+  //       keyBenefits: 4,
+  //       daysActive: 594,
+  //     },
+  //   };
+  //   setProject(dummyData);
+  // }, []);
+
   useEffect(() => {
-    const dummyData: Project = {
-      title: "Green Community Park",
-      description:
-        "Transform the vacant lot on Maple Street into a sustainable community park with native plants, solar lighting, and rainwater collection systems.",
-      tags: ["Environmental/Sustainability", "Medium Priority", "1/15/2024"],
-      votes: 45,
-      concerns: [
-        { icon: <InfoIcon />, label: "Cost", desc: "High initial investment (~$150k)" },
-        { icon: <AccessTimeIcon />, label: "Development Time", desc: "8-12 months" },
-        { icon: <InfoIcon />, label: "Environmental Impact", desc: "Positive - native plants, carbon sequestration" },
-        { icon: <SafetyCheckIcon />, label: "Safety", desc: "Improved lighting and visibility" },
-        { icon: <ConstructionIcon />, label: "Infrastructure", desc: "New pathways and utilities needed" },
-        { icon: <GroupIcon />, label: "Community", desc: "Strong neighborhood support" },
-      ],
-      benefits: [
-        "Creates green space for families",
-        "Educational opportunities for children",
-        "Improves air quality",
-        "Gathering place for community events",
-      ],
-      summary: {
-        votes: 45,
-        priority: "Medium",
-        keyBenefits: 4,
-        daysActive: 594,
-      },
-    };
-    setProject(dummyData);
-  }, []);
+  async function load() {
+    try {
+      const res = await fetch('/api/proposals'); 
+      const list = await res.json();
+
+      const p = list[0];
+      if (!p) return;
+
+      const mapped: Project = {
+        title: p.name,
+        description: p.description,
+        tags: [
+          p.government === 'government' ? 'Government project' : 'Community suggestion',
+          (p.status || 'active').replace(/^\w/, (c: string) => c.toUpperCase()), // capitalise
+          new Date(p.created_at).toLocaleDateString()
+        ],
+        votes: 0, 
+        concerns: [
+          { icon: <InfoIcon />, label: "Budget", desc: p.budget ? `$${p.budget}` : 'N/A' },
+          { icon: <AccessTimeIcon />, label: "Timeline (weeks)", desc: p.timeline ?? 'N/A' },
+          { icon: <InfoIcon />, label: "Status", desc: p.status },
+        ],
+        benefits: [],
+        summary: {
+          votes: 0,
+          priority: 'Unassigned',
+          keyBenefits: 0,
+          daysActive: Math.max(0, Math.floor((Date.now() - new Date(p.created_at).getTime()) / (1000*60*60*24))),
+        }
+      };
+
+      setProject(mapped);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  load();
+}, []);
 
   if (!project) return <Typography sx={{ mt: 4, textAlign: "center" }}>Loading...</Typography>;
 

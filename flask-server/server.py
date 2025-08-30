@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import sqlite3
 
 app =  Flask(__name__)
@@ -88,6 +88,18 @@ def update_user_route(id):
 def delete_user_route(id):
     delete_user(id)
     return redirect(url_for('index'))
+
+@app.route('/api/proposals/<int:proposal_id>', methods=['GET'])
+def get_proposal(proposal_id):
+    conn = sqlite3.connect(DB_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, name, description, status, budget, timeline, contact_email, government, created_at FROM proposals WHERE id = ?", (proposal_id,))
+    row = cursor.fetchone()
+    conn.close()
+    if not row:
+        return jsonify({'error': 'not found'}), 404
+    keys = ['id','name','description','status','budget','timeline','contact_email','government','created_at']
+    return jsonify(dict(zip(keys, row)))
 
 if __name__ == '__main__':
     init_db()
