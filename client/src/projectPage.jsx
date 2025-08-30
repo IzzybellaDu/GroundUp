@@ -23,17 +23,18 @@ export default function ProjectPage() {
 
   useEffect(() => {
     const dummyData = {
-      name: "Green Community Park",
+      title: "Green Community Park",
       description:
         "Transform the vacant lot on Maple Street into a sustainable community park with native plants, solar lighting, and rainwater collection systems.",
-      tags: ["Environmental/Sustainability", "Medium Priority"],
+      tags: ["Environmental/Sustainability", "Medium Priority", "1/15/2024"],
       votes: 45,
       concerns: [
-        { icon: <InfoIcon />, label: "Budget", desc: "High initial investment (~$150k)" },
-        { icon: <AccessTimeIcon />, label: "Timetline", desc: "8-12 months" },
-        { icon: <SafetyCheckIcon />, label: "Created at", desc: "Improved lighting and visibility" },
-        { icon: <ConstructionIcon />, label: "Status", desc: "New pathways and utilities needed" },
-        { icon: <GroupIcon />, label: "Contact email", desc: "Strong neighborhood support" },
+        { icon: <InfoIcon />, label: "Cost", desc: "High initial investment (~$150k)" },
+        { icon: <AccessTimeIcon />, label: "Development Time", desc: "8-12 months" },
+        { icon: <InfoIcon />, label: "Environmental Impact", desc: "Positive - native plants, carbon sequestration" },
+        { icon: <SafetyCheckIcon />, label: "Safety", desc: "Improved lighting and visibility" },
+        { icon: <ConstructionIcon />, label: "Infrastructure", desc: "New pathways and utilities needed" },
+        { icon: <GroupIcon />, label: "Community", desc: "Strong neighborhood support" },
       ],
       benefits: [
         "Creates green space for families",
