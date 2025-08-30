@@ -18,11 +18,10 @@ def init_users_table():
     conn.close()
 
 '''
-Takes in username and password and returns a boolean of whether user exists
+Takes in username and password and returns user if it exists
 '''
-def authenticate(username, password):
+def authenticate_and_get_user(username, password):
     init_users_table()
-
     conn = sqlite3.connect(DB_path)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
@@ -30,8 +29,8 @@ def authenticate(username, password):
     conn.close()
     
     if user and check_password_hash(user[2], password):
-        return True
-    return False
+        return user
+    return None
 
 '''
 Takes in username and password and returns a tuple (boolean of successful acc creation, msg)

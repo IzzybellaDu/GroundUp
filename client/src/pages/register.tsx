@@ -43,7 +43,7 @@ const RegisterForm = () => {
                     password: '',
                     confirm_password: ''
                 });
-                window.location.href = '/'; 
+                window.location.href = '/login'; 
             } else {
                 console.error('Registration failed: ', response.statusText);
                 alert(data.message || 'Failed to register');
