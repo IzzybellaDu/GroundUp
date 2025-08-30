@@ -90,7 +90,6 @@ def delete_user_route(id):
     return redirect(url_for('index'))
 
 # Functions below are to add projects
-
 @app.route('/api/proposals', methods=['POST'])
 def add_project_route():
     try:

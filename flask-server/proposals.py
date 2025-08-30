@@ -30,10 +30,6 @@ def add_project(name, description, government, budget=None, timeline=None, conta
     conn = sqlite3.connect(DB_path)
     cursor = conn.cursor()
 
-    print(f"DEBUG - About to insert:")
-    print(f"name: {name}, description: {description}, government: {government}")
-    print(f"budget: {budget}, timeline: {timeline}, contact_email: {contact_email}, status: {status}")
-    
     cursor.execute('''
         INSERT INTO projects (name, description, government, budget, timeline, contact_email, status, lattitude, longitude)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
