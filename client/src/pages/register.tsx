@@ -2,8 +2,20 @@ import { Button, TextField, Container, Typography, Box } from '@mui/material';
 import React, { useState } from 'react';
 import {useNavigate} from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
+import { styled } from '@mui/material/styles';
 
 const RegisterForm = () => {
+    const BlackOutlinedButton = styled(Button)(({ theme }) => ({
+        borderColor: 'black',
+        color: 'black',
+        '&:hover': {
+            borderColor: 'black',
+            backgroundColor: 'rgba(0, 0, 0, 0.04)',
+        },
+        '&:focus': {
+            borderColor: 'black',
+        },
+    }));
     const navigate = useNavigate();
 
     function navHome() {
@@ -103,20 +115,20 @@ const RegisterForm = () => {
                         />
 
                         <Box sx={{display: 'inline-flex', justifyContent: 'space-between'}}>
-                            <Button variant="outlined" type="button" onClick={handleReset}>
+                            <BlackOutlinedButton variant="outlined" type="button" onClick={handleReset}>
                                 Reset
-                            </Button>                            
-                            <Button variant="contained" type="submit">
+                            </BlackOutlinedButton>                            
+                            <Button variant="contained" sx={{ backgroundColor: "black" }} type="submit">
                                 Register
                             </Button>
 
-                            <Button
+                            <BlackOutlinedButton
                             variant="outlined"
                             startIcon={<HomeIcon />} 
                             onClick={() => navHome()} 
                             >
                             Home
-                            </Button>
+                            </BlackOutlinedButton>
                         </Box>
                     </Box>
                 </Box>
