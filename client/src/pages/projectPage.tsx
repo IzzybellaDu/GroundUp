@@ -12,6 +12,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import InfoIcon from "@mui/icons-material/Info";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import MapView from "../components/mapView.tsx"
 
 // Define types for concerns and project
 interface Concern {
@@ -82,21 +83,6 @@ export default function ProjectPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [err, setErr] = useState<string | null>(null);
 
-  // useEffect(() => {
-  //   const dummyData: Project = {
-  //     title: "Green Community Park",
-  //     description:
-  //       "Transform the vacant lot on Maple Street into a sustainable community park with native plants, solar lighting, and rainwater collection systems.",
-  //     tags: ["Government Initiative", "Accepted", "1/15/2024"],
-  //     votes: 45,
-  //     concerns: [
-  //       { icon: <InfoIcon />, label: "Budget", desc: "2" },
-  //       { icon: <AccessTimeIcon />, label: "Timeline", desc: "8" },
-  //     ]
-  //   };
-  //   setProject(dummyData);
-  // }, []);
-
   const fetchProject = async (id: string): Promise<Project> => {
       try {
         const response = await fetch(`/api/proposals/${id}`, {
@@ -143,16 +129,6 @@ export default function ProjectPage() {
     loadProjects();
   }, [id]);
 
- const formatMoney = (n: number | null) =>
-    typeof n === "number" ? n.toLocaleString(undefined, { style: "currency", currency: "AUD" }) : "—";
-
-  const formatDateTime = (s: string | null | undefined) => {
-    if (!s) return "—";
-    const d = new Date(s);
-    if (Number.isNaN(d.getTime())) return s;
-    return d.toLocaleString();
-  };
-
   if (loading) {
     return <Typography sx={{ mt: 4, textAlign: "center" }}>Loading…</Typography>;
   }
@@ -169,8 +145,18 @@ export default function ProjectPage() {
 
   if (!project) return <Typography sx={{ mt: 4, textAlign: "center" }}>Loading...</Typography>;
 
-  const concerns = [{ icon: <InfoIcon />, label: "Budget", desc: `${project.budget} million` },
-    { icon: <AccessTimeIcon />, label: "Timeline", desc: `${project.timeline} months` },]
+  const concerns = [
+    { icon: <InfoIcon />, label: "Budget", desc: project.budget ? `${project.budget} million` : "N/A" },
+    { icon: <AccessTimeIcon />, label: "Timeline", desc: project.timeline ? `${project.timeline} months` : "N/A" },
+    { icon: <InfoIcon />, label: "Type", desc: project.type || "N/A" },
+    { icon: <InfoIcon />, label: "Urgency", desc: project.urgency || "N/A" },
+    { icon: <InfoIcon />, label: "Votes", desc: project.votes?.toString() ?? "0" },
+    { icon: <InfoIcon />, label: "Cost", desc: project.concerns?.cost ?? "N/A" },
+    { icon: <AccessTimeIcon />, label: "Development Time", desc: project.concerns?.devTime ?? "N/A" },
+    {icon: <InfoIcon></InfoIcon>, label: "lattitude", desc: project.lattitude?.toString() ?? 'N/A'},
+    {icon: <InfoIcon></InfoIcon>, label: "longitude", desc: project.longitude?.toString() ?? 'N/A'}
+
+  ];
 
   return (
     <Box sx={{ p: 4, maxWidth: 900, mx: "auto" }}>
@@ -187,23 +173,27 @@ export default function ProjectPage() {
       {/* Project Header */}
       <Paper sx={{ p: 3, mb: 3 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-          <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+          <Box>
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 1 }}>
+              {project.title}
+            </Typography>
+            <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
               <Chip key={1} label={project.government} size="small" />
               <Chip key={2} label={project.status} size="small" />
-              <Chip key={3} label={project.created_at} size="small" />
-          </Box>
-          <Box sx={{ textAlign: "center" }}>
-            <LikeButton
-              initialCount={25}
-              storageKey={`project:${project.name}:liked`}
-            />
+              {/* <Chip key={3} label={project.created_at} size="small" /> */}
+            </Box>
           </Box>
         </Box>
-        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1 }}>
-          {project.name}
-        </Typography>
+
         <Typography color="text.secondary">{project.description}</Typography>
       </Paper>
+
+      <MapView 
+        latittude={Number(project.lattitude)} 
+        longitude={Number(project.longitude)} 
+        projectName={project.name} 
+      />
+
 
       {/* Project Concerns */}
       <Paper sx={{ p: 3, mb: 3 }}>
