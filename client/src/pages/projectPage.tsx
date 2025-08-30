@@ -68,7 +68,6 @@ export function LikeButton({initialCount = 0, storageKey, onChange}: LikeButtonP
   )
 }
 
-
 export default function ProjectPage() {
   const { id }  = useParams<{ id: string}>(); 
   const [project, setProject] = useState<Project | null>(null);
