@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactNode } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   Box,
@@ -6,7 +6,6 @@ import {
   Chip,
   Typography,
   Paper,
-  Grid,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import InfoIcon from "@mui/icons-material/Info";
@@ -17,13 +16,6 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import ReportIcon from '@mui/icons-material/Report';
 import SellIcon from '@mui/icons-material/Sell';
-
-// Define types for concerns and project
-interface Concern {
-  icon: ReactNode;
-  label: string;
-  desc: string;
-}
 
 interface Project {
   id: number;
@@ -133,6 +125,7 @@ export default function ProjectPage() {
     loadProjects();
   }, [id]);
 
+
   if (loading) {
     return <Typography sx={{ mt: 4, textAlign: "center" }}>Loading…</Typography>;
   }
@@ -157,8 +150,6 @@ export default function ProjectPage() {
     { icon: <InfoIcon />, label: "Votes", desc: project.votes?.toString() ?? "0" },
     { icon: <MonetizationOnIcon />, label: "Cost", desc: project.concerns?.cost ?? "N/A" },
     { icon: <AccessTimeIcon />, label: "Development Time", desc: project.concerns?.devTime ?? "N/A" }
-
-  ];
 
   return (
     <Box sx={{ p: 4, maxWidth: 900, mx: "auto" }}>
@@ -221,4 +212,4 @@ export default function ProjectPage() {
 
     </Box>
   );
-}
+};
