@@ -11,12 +11,26 @@ export default function Home() {
     navigate("/proposal"); // navigate to Proposal page
   }
 
+  function registerClick() {
+    navigate("/register"); // navigate to Register page
+  }
+
+  function loginClick() {
+    navigate("/login"); // navigate to Login page
+  }
+
   return (
     <div>
       <Typography variant="h4">Project Dashboard</Typography>
       <p>Welcome to our app!</p>
       <Button variant="outlined" onClick={handleClick}>
         Create a new proposal
+      </Button>
+      <Button variant="outlined" onClick={registerClick}>
+        Register
+      </Button>
+      <Button variant="outlined" onClick={loginClick}>
+        Login
       </Button>
     </div>
   );

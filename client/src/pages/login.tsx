@@ -1,7 +1,14 @@
 import { Button, TextField, Container, Typography, Box } from '@mui/material';
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import HomeIcon from '@mui/icons-material/Home';
 
 const LoginForm = () => {
+    const navigate = useNavigate();
+
+    function navHome() {
+        navigate("/");
+    }
     const [formData, setFormData] = useState({
         username: '',
         password: ''
@@ -43,6 +50,10 @@ const LoginForm = () => {
             alert('Failed to login');
         }
     };
+
+    function handleRegister() {
+        navigate("/register"); // navigate to Register page
+    }
 
     // creates a POST request to the add_project function
     <form action="api/login" method="POST">
@@ -86,12 +97,20 @@ const LoginForm = () => {
                             variant="outlined"
                         />
 
-                        <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+                        <Box sx={{display: 'inline-flex', justifyContent: 'space-between'}}>
+                            <Button variant="outlined" type="button" onClick={handleRegister}>
+                                Register
+                            </Button>                            
                             <Button variant="contained" type="submit">
                                 Login
                             </Button>
-                            <Button variant="outlined" type="button" onClick={handleReset}>
-                                Reset
+
+                            <Button
+                            variant="outlined"
+                            startIcon={<HomeIcon />} 
+                            onClick={() => navHome()} 
+                            >
+                            Home
                             </Button>
                         </Box>
                     </Box>
