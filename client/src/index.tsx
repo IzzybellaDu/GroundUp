@@ -13,7 +13,6 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/old" element={<App></App>}></Route>
       <Route path="/proposal" element={<ProposalForm></ProposalForm>}></Route>
       <Route path="/login" element={<LoginForm></LoginForm>}></Route>
       <Route path="/register" element={<RegisterForm></RegisterForm>}></Route>
@@ -25,6 +24,7 @@ root.render(
         throw new Error('Function not implemented.');
       } }></Dashboard>}></Route>
       <Route path="project/:id" element={<ProjectPage></ProjectPage>}></Route>
+      <Route path="comments/:id" element={<ProjectPage></ProjectPage>}></Route>
     </Routes>
   </BrowserRouter>  
   
