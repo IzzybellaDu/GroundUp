@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactNode } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   Box,
@@ -6,20 +6,11 @@ import {
   Chip,
   Typography,
   Paper,
-  Grid,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import InfoIcon from "@mui/icons-material/Info";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import EmailIcon from '@mui/icons-material/Email';
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-
-// Define types for concerns and project
-interface Concern {
-  icon: ReactNode;
-  label: string;
-  desc: string;
-}
 
 interface Project {
   id: number;
@@ -145,15 +136,6 @@ export default function ProjectPage() {
     loadProjects();
   }, [id]);
 
- const formatMoney = (n: number | null) =>
-    typeof n === "number" ? n.toLocaleString(undefined, { style: "currency", currency: "AUD" }) : "—";
-
-  const formatDateTime = (s: string | null | undefined) => {
-    if (!s) return "—";
-    const d = new Date(s);
-    if (Number.isNaN(d.getTime())) return s;
-    return d.toLocaleString();
-  };
 
   if (loading) {
     return <Typography sx={{ mt: 4, textAlign: "center" }}>Loading…</Typography>;
@@ -172,7 +154,7 @@ export default function ProjectPage() {
   if (!project) return <Typography sx={{ mt: 4, textAlign: "center" }}>Loading...</Typography>;
 
   const concerns = [{ icon: <InfoIcon />, label: "Budget", desc: `${project.budget} million` },
-    { icon: <AccessTimeIcon />, label: "Timeline", desc: `${project.timeline} months` },]
+    { icon: <AccessTimeIcon />, label: "Timeline", desc: `${project.timeline} weeks` },]
 
   return (
     <Box sx={{ p: 4, maxWidth: 900, mx: "auto" }}>
@@ -231,4 +213,4 @@ export default function ProjectPage() {
 
     </Box>
   );
-}``
+};
