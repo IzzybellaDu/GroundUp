@@ -1,4 +1,4 @@
-# XXX – Community Proposal Platform  
+# GroundUp – Community Proposal Platform  
 
 A full-stack web application with a React frontend and a Flask backend, designed to give communities a voice in shaping the future of their cities.  
 
@@ -6,7 +6,7 @@ A full-stack web application with a React frontend and a Flask backend, designed
 
 We believe that cities of the future are built by those who live and interact with them daily. Despite government projects impacting communities each year and issues with city infrastructure, there are currently very few ways to provide meaningful input.  
 
-This inspired us to create **XXX**, a platform that allows residents to view, support, and propose projects that impact their neighborhoods. By making decision-making more transparent, communities can influence where taxpayer money is spent and ensure local priorities are heard.  
+This inspired us to create **GroundUp**, a platform that allows residents to view, support, and propose projects that impact their neighborhoods. By making decision-making more transparent, communities can influence where taxpayer money is spent and ensure local priorities are heard.  
 
 ## What It Does  
 
