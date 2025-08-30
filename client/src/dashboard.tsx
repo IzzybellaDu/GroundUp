@@ -30,7 +30,7 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
     id: "test",
     description: "Hi there this is a descirption awjdoiawjdo awjodj aoiwj doiawj doiajw odijaowdj oiawj doja woidjoawj diojawodjoaiwj dioaj wodijoiwadj oiawj doiawjodij",
     title: "test",
-    type: "Environmental/sustainability",
+    type: "Public transport",
     votes: 50,
     userVote: null,
     concerns: {
@@ -42,7 +42,7 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
       community: "yeah"
     },
     likes: [],
-    urgency: "High",
+    urgency: "Low",
     createdAt: "December"
   };
   

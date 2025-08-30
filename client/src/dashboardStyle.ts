@@ -32,13 +32,37 @@ export const GlobalStyle = createGlobalStyle`
     .tags {
         display: flex;
         flex-direction: row;
-        align-items: center;
+        align-items: flex-start;
     }
         
     h2 {
         font-family: Helvetica;
-        margin-top: 10px;
+        margin-top: -35px;
         margin-bottom: -7px;
+    }
+        
+    .voting {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        margin-left: auto;
+        margin-right: 0;
+    }
+        
+    .votes {
+        font-family: Helvetica;
+    }
+        
+    .details {
+        display: flex;
+        flex-direction: row;
+        font-family: Helvetica;
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+        
+    .detail {
+        margin-right: 30px;
     }
 `;
 
