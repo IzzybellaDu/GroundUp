@@ -1,6 +1,6 @@
 import json
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
-from proposals import add_project, get_projects, DB_path
+from proposals import add_project, get_projects, vote_now, DB_path
 from accounts import authenticate_and_get_user, create_account
 from functools import wraps
 import sqlite3
@@ -63,6 +63,25 @@ def register():
         return {'status': 'success', 'message': 'Registration successful'}, 200
     else:
         return {'status': 'fail', 'message': msg}, 401
+    
+@app.route('/api/voting', methods=['GET', 'POST'])
+@login_required
+def change_votes():
+    try:
+        project_id = request.form['project_id']
+        votes = request.form['votes']
+        userVote = request.form['userVote']
+        
+        vote_now(project_id, votes, userVote)
+        
+        return jsonify({
+            'status': 'success',
+            'message': 'Project updated successfully',
+            'project_id': project_id
+        }), 201
+    except Exception as e:
+        print(f'Error voting for project: {str(e)}')
+        return jsonify({'status': 'error', 'message': f'Server error: {str(e)}'}), 500
 
 @app.route('/api/proposals', methods=['POST'])
 @login_required

@@ -42,7 +42,7 @@ export const GlobalStyle = createGlobalStyle`
         
     h2 {
         font-family: Roboto;
-        margin-top: -35px;
+        margin-top: -20px;
         margin-bottom: -7px;
     }
         
@@ -52,6 +52,7 @@ export const GlobalStyle = createGlobalStyle`
         text-align: center;
         margin-left: auto;
         margin-right: 0;
+        margin-top: 10px;
     }
         
     .votes {

@@ -1,11 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as styles from './dashboardStyle.ts';
 import { Project, PROJECT_TYPES } from './types';
-import { IconButton } from '@mui/material';
+import { IconButton, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 export default function ProjectModule({ project }: { project: Project }) {
+  const [view, setView] = React.useState(project.userVote);
+  const [voteCount, setVoteCount] = React.useState(project.votes);
+  const [oldView, setOldView] = React.useState(0);
+  
+  const submitVote = async () => {
+    const formDataObj = new FormData();
+    console.log(view);
+    formDataObj.append('project_id', project.id)
+    formDataObj.append('votes', voteCount.toString());
+    formDataObj.append('userVote', view as string);
+
+    try {
+        const response = await fetch('/api/voting', {
+            method: 'POST',
+            body: formDataObj 
+        });
+        const data = await response.json(); // Read the JSON response
+        if (!response.ok) {
+            alert(data.message || 'Failed to vote');
+        }
+    } catch (error) {
+        console.error('Error voting', error);
+        alert('Failed to vote');
+    }
+  };
+  
+  const upVote = (event: React.MouseEvent<HTMLElement>, newView: "up" | "down" | "null") => {
+    
+    if (view === "down" || view === "null") {
+      setVoteCount(voteCount + 1);
+      setView("up");
+    } else if (view === "up") {
+      setVoteCount(voteCount - 1);
+      setView("null");
+    }
+    
+    submitVote();
+  };
+  
+  const downVote = (event: React.MouseEvent<HTMLElement>, newView: "up" | "down" | null) => {
+    
+    if (view === "up" || view === "null") {
+      setVoteCount(voteCount - 1);
+      setView("down");
+    } else if (view === "down") {
+      setVoteCount(voteCount + 1);
+      setView("null");
+    }
+    
+    submitVote();
+  };
+  
+  const changeView = (event: React.MouseEvent<HTMLElement>, newView: "up" | "down" | null) => {
+    
+    if (newView === "up" && (view === "down" || view === null)) {
+      setVoteCount(voteCount + 1);
+      setOldView(1);
+      setView(newView);
+    } else if (newView === "down" && (view === "up" || view === null)) {
+      setVoteCount(voteCount - 1);
+      setOldView(-1);
+      setView(newView);
+      
+    } else if (newView === "down" && view === "down") {
+      setVoteCount(voteCount + 1);
+      setOldView(0);
+      setView("null");
+    } else if (newView === "up" && view === "up") {
+      setVoteCount(voteCount - 1);
+      setOldView(0);
+      setView("null");
+    }
+    
+    submitVote();
+  };
+  
   const getTypeColor = (type: string) => {
     switch (type) {
       case 'Environmental/sustainability': return { backgroundColor: "#ccffcc", color: "#336600" };
@@ -38,13 +114,16 @@ export default function ProjectModule({ project }: { project: Project }) {
         <styles.Tag backgroundColor={urgencyColor.backgroundColor} color={urgencyColor.color}>{urgencyString}</styles.Tag>
         
         <div className="voting">
-          <IconButton size="small">
-            <ArrowDropUpIcon sx={{ fontSize: "35px", marginBottom: "-10px"}}></ArrowDropUpIcon>
-          </IconButton>
-          <div className="votes">{project.votes}</div>
-          <IconButton size="small">
-            <ArrowDropDownIcon sx={{ fontSize: "35px", marginTop: "-10px" }}></ArrowDropDownIcon>
-          </IconButton>
+          <ToggleButtonGroup orientation="vertical" value={view} exclusive>
+            <ToggleButton onClick={upVote} sx={{ "&.Mui-selected": {backgroundColor: "#005b94ff", color: "white", "&:hover": {backgroundColor: "#005b94ff", color: "white", opacity: 0.9}}, height: "20px" }} size="small" value="up">
+              <ArrowDropUpIcon sx={{ fontSize: "35px", marginBottom: "-10px"}}></ArrowDropUpIcon>
+            </ToggleButton>
+            <div className="votes">{voteCount}</div>
+            <ToggleButton onClick={downVote} sx={{ "&.Mui-selected": {backgroundColor: "#005b94ff", color: "white", "&:hover": {backgroundColor: "#005b94ff", color: "white", opacity: 0.9}}, height: "20px" }} size="small" value="down">
+              <ArrowDropDownIcon sx={{ fontSize: "35px", marginTop: "-10px" }}></ArrowDropDownIcon>
+            </ToggleButton>
+            
+          </ToggleButtonGroup>
         </div>
       </div>
       

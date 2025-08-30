@@ -4,7 +4,7 @@ export interface Project {
   description: string;
   type: 'Environmental/sustainability' | 'Traffic' | 'Bike lanes' | 'Roads' | 'Public transport';
   votes: number;
-  userVote: 'up' | 'down' | null;
+  userVote: 'up' | 'down' | "null";
   concerns: {
     cost: string;
     devTime: string;
