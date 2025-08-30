@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Project, PROJECT_TYPES } from './types';
 import * as styles from './dashboardStyle.ts';
+import ProjectModule from './projectModule.tsx';
 import { Button, InputLabel, MenuItem, FormControl, Select, SelectChangeEvent } from '@mui/material';
 
 import MapsUgcOutlinedIcon from '@mui/icons-material/MapsUgcOutlined';
@@ -23,7 +24,27 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
   
   const changeSort = (event: SelectChangeEvent) => {
     setSort(event.target.value)
-  }
+  };
+  
+  const testObj: Project = {
+    id: "test",
+    description: "Hi there this is a descirption awjdoiawjdo awjodj aoiwj doiawj doiajw odijaowdj oiawj doja woidjoawj diojawodjoaiwj dioaj wodijoiwadj oiawj doiawjodij",
+    title: "test",
+    type: "Environmental/sustainability",
+    votes: 50,
+    userVote: null,
+    concerns: {
+      cost: "500 milly",
+      devTime: "long",
+      environmentalImpact: "bad :(",
+      safety: "not safe",
+      infrastructure: "yeah",
+      community: "yeah"
+    },
+    likes: [],
+    urgency: "High",
+    createdAt: "December"
+  };
   
   const [filterType, setFilterType] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('votes');
@@ -46,26 +67,6 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
   //   }
   // });
 
-  // const getUrgencyColor = (urgency: string) => {
-  //   switch (urgency) {
-  //     case 'High': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
-  //     case 'Medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
-  //     case 'Low': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
-  //     default: return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
-  //   }
-  // };
-
-  // const getTypeColor = (type: string) => {
-  //   switch (type) {
-  //     case 'Environmental/sustainability': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
-  //     case 'Traffic': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
-  //     case 'Bike lanes': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
-  //     case 'Roads': return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
-  //     case 'Public transport': return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200';
-  //     default: return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
-  //   }
-  // };
-
   return (
     <styles.MainBox>
       <styles.GlobalStyle />
@@ -75,7 +76,7 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
             <h1>City Projects</h1>
             <p>Your city. Your voice.</p>
           </div>
-          <Button variant="contained" startIcon={<MapsUgcOutlinedIcon />} sx={{ backgroundColor: "black "}}>
+          <Button variant="contained" startIcon={<MapsUgcOutlinedIcon />} sx={{ backgroundColor: "black" }}>
             New Project
           </Button>
         </div>
@@ -112,6 +113,11 @@ export default function Dashboard({ projects, onProjectClick, onVote, onCreateCl
             </Select>
           </FormControl>
         </div>
+        
+        <ProjectModule project={testObj} />
+        <ProjectModule project={testObj} />
+        <ProjectModule project={testObj} />
+        <ProjectModule project={testObj} />
       
     </styles.MainBox>
   );
