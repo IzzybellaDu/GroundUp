@@ -156,6 +156,5 @@ def get_projects_route():
     except Exception as e:
         return {'status': 'error', 'message': f'Server error: {str(e)}'}, 500
 
-
 if __name__ == '__main__':
     app.run(debug=True)
