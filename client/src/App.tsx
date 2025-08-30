@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button, Container, Typography } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
-import Proposal from "./pages/proposal.tsx";
 
 
 export default function Home() {
-  // const [data, setData] = useState([{}]);
+  
   const navigate = useNavigate();
 
   function handleClick() {

@@ -1,8 +1,17 @@
 import { Button, TextField, Container, Typography, Box, FormControl, InputLabel, Select, MenuItem} from '@mui/material';
 import React, { useState } from 'react';
 import LocationTextField from '../components/locationTextField.tsx';
+import {useNavigate} from "react-router-dom";
+import HomeIcon from '@mui/icons-material/Home';
 
 const ProposalForm = () => {
+
+    const navigate = useNavigate();
+
+    function navHome() {
+        navigate("/");
+    }
+
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -199,12 +208,20 @@ const ProposalForm = () => {
                         </Select>
                         </FormControl>    
 
-                        <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+                        <Box sx={{display: 'inline-flex', justifyContent: 'space-between'}}>
+                            <Button variant="outlined" type="button" onClick={handleReset}>
+                                Reset
+                            </Button>                            
                             <Button variant="contained" type="submit">
                                 Submit Proposal
                             </Button>
-                            <Button variant="outlined" type="button" onClick={handleReset}>
-                                Reset
+
+                            <Button
+                            variant="outlined"
+                            startIcon={<HomeIcon />} 
+                            onClick={() => navHome()} 
+                            >
+                            Home
                             </Button>
                         </Box>
                     </Box>
