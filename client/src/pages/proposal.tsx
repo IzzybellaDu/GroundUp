@@ -216,19 +216,6 @@ const ProposalForm = () => {
                             required
                             variant="outlined"
                         />
-
-                        <TextField
-                            fullWidth
-                            label="Description"
-                            name="description"
-                            value={formData.description}
-                            onChange={handleChange}
-                            required
-                            multiline
-                            rows={4}
-                            variant="outlined"
-                        />
-
                         <FormControl fullWidth>
                             <InputLabel id="type-select-label">Project Type</InputLabel>
                             <Select
