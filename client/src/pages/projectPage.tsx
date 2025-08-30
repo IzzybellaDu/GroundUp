@@ -11,6 +11,11 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import InfoIcon from "@mui/icons-material/Info";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import MapView from "../components/mapView.tsx"
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import ReportIcon from '@mui/icons-material/Report';
+import SellIcon from '@mui/icons-material/Sell';
 
 interface Project {
   id: number;
@@ -21,7 +26,7 @@ interface Project {
   timeline: number | null;
   contact_email: string;
   status: string;
-  lattitude: string;
+  latitude: string;
   longitude: string;
   created_at: string;
 }
@@ -137,8 +142,14 @@ export default function ProjectPage() {
 
   if (!project) return <Typography sx={{ mt: 4, textAlign: "center" }}>Loading...</Typography>;
 
-  const concerns = [{ icon: <InfoIcon />, label: "Budget", desc: `${project.budget} million` },
-    { icon: <AccessTimeIcon />, label: "Timeline", desc: `${project.timeline} weeks` },]
+  const concerns = [
+    { icon: <MonetizationOnIcon />, label: "Budget", desc: project.budget ? `${project.budget} million` : "N/A" },
+    { icon: <AccessTimeIcon />, label: "Timeline", desc: project.timeline ? `${project.timeline} months` : "N/A" },
+    { icon: <LocationCityIcon />, label: "Type", desc: project.type || "N/A" },
+    { icon: <ReportIcon />, label: "Urgency", desc: project.urgency || "N/A" },
+    { icon: <InfoIcon />, label: "Votes", desc: project.votes?.toString() ?? "0" },
+    { icon: <MonetizationOnIcon />, label: "Cost", desc: project.concerns?.cost ?? "N/A" },
+    { icon: <AccessTimeIcon />, label: "Development Time", desc: project.concerns?.devTime ?? "N/A" }
 
   return (
     <Box sx={{ p: 4, maxWidth: 900, mx: "auto" }}>
@@ -155,23 +166,27 @@ export default function ProjectPage() {
       {/* Project Header */}
       <Paper sx={{ p: 3, mb: 3 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-          <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+          <Box>
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 1 }}>
+              {project.title}
+            </Typography>
+            <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
               <Chip key={1} label={project.government} size="small" />
               <Chip key={2} label={project.status} size="small" />
-              <Chip key={3} label={project.created_at} size="small" />
-          </Box>
-          <Box sx={{ textAlign: "center" }}>
-            <LikeButton
-              initialCount={25}
-              storageKey={`project:${project.name}:liked`}
-            />
+              {/* <Chip key={3} label={project.created_at} size="small" /> */}
+            </Box>
           </Box>
         </Box>
-        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1 }}>
-          {project.name}
-        </Typography>
+
         <Typography color="text.secondary">{project.description}</Typography>
       </Paper>
+
+      <MapView 
+        latittude={Number(project.latitude)} 
+        longitude={Number(project.longitude)} 
+        projectName={project.name} 
+      />
+
 
       {/* Project Concerns */}
       <Paper sx={{ p: 3, mb: 3 }}>
