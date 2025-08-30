@@ -11,9 +11,7 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import InfoIcon from "@mui/icons-material/Info";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import SafetyCheckIcon from "@mui/icons-material/SafetyCheck";
-import ConstructionIcon from "@mui/icons-material/Construction";
-import GroupIcon from "@mui/icons-material/Group";
+import EmailIcon from '@mui/icons-material/Email';
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 
 // Define types for concerns and project
@@ -46,71 +44,17 @@ export default function ProjectPage() {
       title: "Green Community Park",
       description:
         "Transform the vacant lot on Maple Street into a sustainable community park with native plants, solar lighting, and rainwater collection systems.",
-      tags: ["Environmental/Sustainability", "Medium Priority", "1/15/2024"],
-      votes: 45,
+      tags: ["Government Initiative", "Accepted", "1/15/2024"],
+      // votes: 45,
       concerns: [
-        { icon: <InfoIcon />, label: "Cost", desc: "High initial investment (~$150k)" },
-        { icon: <AccessTimeIcon />, label: "Development Time", desc: "8-12 months" },
-        { icon: <InfoIcon />, label: "Environmental Impact", desc: "Positive - native plants, carbon sequestration" },
-        { icon: <SafetyCheckIcon />, label: "Safety", desc: "Improved lighting and visibility" },
-        { icon: <ConstructionIcon />, label: "Infrastructure", desc: "New pathways and utilities needed" },
-        { icon: <GroupIcon />, label: "Community", desc: "Strong neighborhood support" },
-      ],
-      benefits: [
-        "Creates green space for families",
-        "Educational opportunities for children",
-        "Improves air quality",
-        "Gathering place for community events",
-      ],
-      summary: {
-        votes: 45,
-        priority: "Medium",
-        keyBenefits: 4,
-        daysActive: 594,
-      },
+        { icon: <InfoIcon />, label: "Budget", desc: "2 million" },
+        { icon: <AccessTimeIcon />, label: "Timeline", desc: "8 months" },
+        { icon: <EmailIcon />, label: "Contact Email", desc: "hello@hello.com" },
+      ]
     };
     setProject(dummyData);
   }, []);
 
-//   useEffect(() => {
-//   async function load() {
-//     try {
-//       const res = await fetch('/api/proposals'); 
-//       const list = await res.json();
-
-//       const p = list[0];
-//       if (!p) return;
-
-//       const mapped: Project = {
-//         title: p.name,
-//         description: p.description,
-//         tags: [
-//           p.government === 'government' ? 'Government project' : 'Community suggestion',
-//           (p.status || 'active').replace(/^\w/, (c: string) => c.toUpperCase()), // capitalise
-//           new Date(p.created_at).toLocaleDateString()
-//         ],
-//         votes: 0, 
-//         concerns: [
-//           { icon: <InfoIcon />, label: "Budget", desc: p.budget ? `$${p.budget}` : 'N/A' },
-//           { icon: <AccessTimeIcon />, label: "Timeline (weeks)", desc: p.timeline ?? 'N/A' },
-//           { icon: <InfoIcon />, label: "Status", desc: p.status },
-//         ],
-//         benefits: [],
-//         summary: {
-//           votes: 0,
-//           priority: 'Unassigned',
-//           keyBenefits: 0,
-//           daysActive: Math.max(0, Math.floor((Date.now() - new Date(p.created_at).getTime()) / (1000*60*60*24))),
-//         }
-//       };
-
-//       setProject(mapped);
-//     } catch (e) {
-//       console.error(e);
-//     }
-//   }
-//   load();
-// }, []);
 
   if (!project) return <Typography sx={{ mt: 4, textAlign: "center" }}>Loading...</Typography>;
 
@@ -166,41 +110,6 @@ export default function ProjectPage() {
         </Box>
       </Paper>
 
-      {/* Project Benefits */}
-      <Paper sx={{ p: 3, mb: 3 }}>
-        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
-          Project Benefits
-        </Typography>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-          {project.benefits.map((b, i) => (
-            <Box key={i} sx={{ p: 1, borderRadius: 1, backgroundColor: "#e6f4ea" }}>
-              <Typography>{b}</Typography>
-            </Box>
-          ))}
-        </Box>
-      </Paper>
-
-      {/* Project Summary */}
-      <Paper sx={{ p: 3 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={6} sm={3}>
-            <Typography sx={{ fontWeight: 500 }}>Community Votes</Typography>
-            <Typography>{project.summary.votes}</Typography>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <Typography sx={{ fontWeight: 500 }}>Priority Level</Typography>
-            <Typography>{project.summary.priority}</Typography>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <Typography sx={{ fontWeight: 500 }}>Key Benefits</Typography>
-            <Typography>{project.summary.keyBenefits}</Typography>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <Typography sx={{ fontWeight: 500 }}>Days Active</Typography>
-            <Typography>{project.summary.daysActive}</Typography>
-          </Grid>
-        </Grid>
-      </Paper>
     </Box>
   );
 }
