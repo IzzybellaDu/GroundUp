@@ -13,6 +13,10 @@ import InfoIcon from "@mui/icons-material/Info";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import MapView from "../components/mapView.tsx"
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import ReportIcon from '@mui/icons-material/Report';
+import SellIcon from '@mui/icons-material/Sell';
 
 // Define types for concerns and project
 interface Concern {
@@ -30,7 +34,7 @@ interface Project {
   timeline: number | null;
   contact_email: string;
   status: string;
-  lattitude: string;
+  latitude: string;
   longitude: string;
   created_at: string;
 }
@@ -146,15 +150,13 @@ export default function ProjectPage() {
   if (!project) return <Typography sx={{ mt: 4, textAlign: "center" }}>Loading...</Typography>;
 
   const concerns = [
-    { icon: <InfoIcon />, label: "Budget", desc: project.budget ? `${project.budget} million` : "N/A" },
+    { icon: <MonetizationOnIcon />, label: "Budget", desc: project.budget ? `${project.budget} million` : "N/A" },
     { icon: <AccessTimeIcon />, label: "Timeline", desc: project.timeline ? `${project.timeline} months` : "N/A" },
-    { icon: <InfoIcon />, label: "Type", desc: project.type || "N/A" },
-    { icon: <InfoIcon />, label: "Urgency", desc: project.urgency || "N/A" },
+    { icon: <LocationCityIcon />, label: "Type", desc: project.type || "N/A" },
+    { icon: <ReportIcon />, label: "Urgency", desc: project.urgency || "N/A" },
     { icon: <InfoIcon />, label: "Votes", desc: project.votes?.toString() ?? "0" },
-    { icon: <InfoIcon />, label: "Cost", desc: project.concerns?.cost ?? "N/A" },
-    { icon: <AccessTimeIcon />, label: "Development Time", desc: project.concerns?.devTime ?? "N/A" },
-    {icon: <InfoIcon></InfoIcon>, label: "lattitude", desc: project.lattitude?.toString() ?? 'N/A'},
-    {icon: <InfoIcon></InfoIcon>, label: "longitude", desc: project.longitude?.toString() ?? 'N/A'}
+    { icon: <MonetizationOnIcon />, label: "Cost", desc: project.concerns?.cost ?? "N/A" },
+    { icon: <AccessTimeIcon />, label: "Development Time", desc: project.concerns?.devTime ?? "N/A" }
 
   ];
 
@@ -189,7 +191,7 @@ export default function ProjectPage() {
       </Paper>
 
       <MapView 
-        latittude={Number(project.lattitude)} 
+        latittude={Number(project.latitude)} 
         longitude={Number(project.longitude)} 
         projectName={project.name} 
       />

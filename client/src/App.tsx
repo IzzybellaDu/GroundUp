@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-route
 import { GlobalStyle, MainBox, ProjectContainer, Tag } from "./dashboardStyle.ts";
 
 export default function Home() {
+  
   const navigate = useNavigate();
   
   // Add state for authentication
