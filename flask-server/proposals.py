@@ -7,7 +7,7 @@ def init_projects_table():
     """Initialize the projects table with all required fields"""
     conn = sqlite3.connect(DB_path)
     cursor = conn.cursor()
-    cursor.execute('DROP TABLE IF EXISTS projects')  # Uncomment to reset table
+    # cursor.execute('DROP TABLE IF EXISTS projects')  # Uncomment to reset table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS projects (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
