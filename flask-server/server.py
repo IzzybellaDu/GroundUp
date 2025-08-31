@@ -89,6 +89,7 @@ def change_votes():
 def add_project_route():
     """Handle project proposal submission"""
     try:
+        
         # Get form data - using correct field names from frontend
         title = request.form.get('title')
         description = request.form.get('description', '')
@@ -103,7 +104,9 @@ def add_project_route():
         government = request.form.get('government')
         status = request.form.get('status', 'active')
         
+        
         # Validate required fields
+        print(title, description)
         if not title:
             return jsonify({'status': 'error', 'message': 'Project title is required'}), 400
         

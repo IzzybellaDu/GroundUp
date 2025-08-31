@@ -138,3 +138,6 @@ def get_projects():
         projects_list.append(project_dict)
     
     return projects_list
+
+if __name__ == "main":
+    init_projects_table()
