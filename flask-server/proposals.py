@@ -36,6 +36,14 @@ def init_projects_table():
     ''')
     conn.commit()
     conn.close()
+    
+def vote_now(project_id, votes, user_vote):
+    conn = sqlite3.connect(DB_path)
+    cursor = conn.cursor()
+    
+    cursor.execute("UPDATE projects SET votes = ?, userVote = ? WHERE id = ?", (votes, user_vote, project_id))
+    conn.commit()
+    conn.close()
 
 def add_project(title, description, project_type=None, urgency='Medium', concerns=None, 
                 location=None, latitude=None, longitude=None, timeline=None, 

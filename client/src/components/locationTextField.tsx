@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TextField, Autocomplete, CircularProgress } from '@mui/material';
 
-
 const useLocationAutocomplete = (formData, setFormData) => {
   const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(false);

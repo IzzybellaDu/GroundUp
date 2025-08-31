@@ -6,7 +6,7 @@ DB_path = 'database.db'
 def init_comments_table():
     conn = sqlite3.connect(DB_path)
     cursor = conn.cursor()
-    # cursor.execute('DROP TABLE IF EXISTS comments')  # Uncomment to reset table
+    # cursor.execute('DROP TABLE .IF EXISTS comments')  # Uncomment to reset table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS comments (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
