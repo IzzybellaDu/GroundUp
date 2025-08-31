@@ -19,18 +19,18 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import SendIcon from "@mui/icons-material/Send";
 import PersonIcon from "@mui/icons-material/Person";
 
+import MapView from "../components/mapView.tsx"
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import ReportIcon from '@mui/icons-material/Report';
+import SellIcon from '@mui/icons-material/Sell';
+
 // Define types for concerns and project
 interface Concern {
   icon: ReactNode;
   label: string;
   desc: string;
 }
-
-import MapView from "../components/mapView.tsx"
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-import LocationCityIcon from '@mui/icons-material/LocationCity';
-import ReportIcon from '@mui/icons-material/Report';
-import SellIcon from '@mui/icons-material/Sell';
 
 interface Project {
   id: number;

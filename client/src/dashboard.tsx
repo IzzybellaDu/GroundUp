@@ -7,6 +7,7 @@ import MapsUgcOutlinedIcon from '@mui/icons-material/MapsUgcOutlined';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
+import logo from './groundUp.png'; 
 
 interface DashboardProps {
   // projects: Project[];
@@ -188,16 +189,20 @@ export default function Dashboard({ onProjectClick, onVote }: DashboardProps) {
   return (
     <styles.MainBox>
       <styles.GlobalStyle />
+      <img 
+    src={logo} 
+    alt="Ground Up Logo" 
+    style={{ height: '90px', width: 'auto' }}
+  />
         <div className='header'>
           <div>
-            <h1>City Projects</h1>
+            <h1><b>Ground Up</b></h1>
             <p>Your city. Your voice.</p>
           </div>
           <Button variant="contained" startIcon={<MapsUgcOutlinedIcon />} sx={{ backgroundColor: "black" }} onClick={handleNewProject}>
             New Project
           </Button>
         </div>
-        
         <div className='filters'>
   {/* Left side - filters */}
   <div style={{ display: "flex", alignItems: "center" }}>
