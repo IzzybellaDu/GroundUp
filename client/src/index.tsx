@@ -7,22 +7,24 @@ import ProposalForm from './pages/proposal.tsx'; // Your form component
 import LoginForm from './pages/login.tsx';
 import RegisterForm from './pages/register.tsx';
 import Dashboard from './dashboard.tsx';
+import ProjectPage from './pages/projectPage.tsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />} />
       <Route path="/proposal" element={<ProposalForm></ProposalForm>}></Route>
       <Route path="/login" element={<LoginForm></LoginForm>}></Route>
       <Route path="/register" element={<RegisterForm></RegisterForm>}></Route>
-      <Route path='/dashboard' element={<Dashboard projects={[]} onProjectClick={function (projectId: string): void {
+      <Route path='/' element={<Dashboard projects={[]} onProjectClick={function (projectId: string): void {
         throw new Error('Function not implemented.');
       } } onVote={function (projectId: string, voteType: 'up' | 'down'): void {
         throw new Error('Function not implemented.');
       } } onCreateClick={function (): void {
         throw new Error('Function not implemented.');
       } }></Dashboard>}></Route>
+      <Route path="project/:id" element={<ProjectPage></ProjectPage>}></Route>
+      <Route path="comments/:id" element={<ProjectPage></ProjectPage>}></Route>
     </Routes>
   </BrowserRouter>  
   

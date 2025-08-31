@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import LocationTextField from '../components/locationTextField.tsx';
 import {useNavigate} from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
+import { styled } from '@mui/material/styles';
 
 // Import the types
 interface Project {
@@ -34,6 +35,18 @@ const PROJECT_TYPES = [
 ] as const;
 
 const URGENCY_LEVELS = ['Low', 'Medium', 'High'] as const;
+
+const BlackOutlinedButton = styled(Button)(({ theme }) => ({
+  borderColor: 'black',
+  color: 'black',
+  '&:hover': {
+    borderColor: 'black',
+    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+  },
+  '&:focus': {
+    borderColor: 'black',
+  },
+}));
 
 // Form data interface that includes both Project fields and additional form-specific fields
 interface ProposalFormData {
@@ -344,6 +357,9 @@ const ProposalForm = () => {
                             onChange={handleChange}
                             required
                             variant="outlined"
+                            InputProps={{
+                                inputProps: { min: 1 }  // <-- correct way to pass min/max
+                            }}
                         />
 
                         {/* <TextField
@@ -392,19 +408,19 @@ const ProposalForm = () => {
                         </FormControl>
 
                         <Box sx={{display: 'inline-flex', justifyContent: 'space-between'}}>
-                            <Button variant="outlined" type="button" onClick={handleReset}>
+                            <BlackOutlinedButton variant="outlined" type="button" onClick={handleReset}>
                                 Reset
-                            </Button>
+                            </BlackOutlinedButton>
                             <Button variant="contained" type="submit">
                                 Submit Proposal
                             </Button>
-                            <Button
+                            <BlackOutlinedButton
                                 variant="outlined"
                                 startIcon={<HomeIcon />}
                                 onClick={() => navHome()}
                             >
                                 Home
-                            </Button>
+                            </BlackOutlinedButton>
                         </Box>
                     </Box>
                 </Box>

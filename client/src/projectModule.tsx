@@ -4,8 +4,18 @@ import { Project, PROJECT_TYPES } from './types';
 import { IconButton, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { useNavigate } from 'react-router-dom';
 
-export default function ProjectModule({ project }: { project: Project }) {
+// allow project modules to be clicked on
+interface ProjectModuleProps {
+  project: Project;
+}
+
+export default function ProjectModule({ project }: ProjectModuleProps) {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/project/${project.id}`);
+  };  
   const [view, setView] = React.useState(project.userVote);
   const [voteCount, setVoteCount] = React.useState(project.votes);
   const [oldView, setOldView] = React.useState(0);
@@ -107,7 +117,7 @@ export default function ProjectModule({ project }: { project: Project }) {
   const urgencyString = project.urgency + " Urgency";
 
   return (
-    <styles.ProjectContainer>
+    <styles.ProjectContainer onClick={handleClick}>
       <styles.GlobalStyle />
       <div className="tags">
         <styles.Tag backgroundColor={typeColor.backgroundColor} color={typeColor.color}>{project.type}</styles.Tag>
