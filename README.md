@@ -4,10 +4,6 @@ GroundUp is a full-stack web application with a React frontend and a Flask backe
 
 Try it for yourself [here](https://groundup-zi9f.onrender.com/) at the live demo link!
 
-![Project Screenshot 1](https://drive.google.com/uc?export=view&id=1ervIXreePI3YrjGGJvXbrGwlnfbt3G3q)
-![Project Screenshot 2](https://drive.google.com/uc?export=view&id=1GuO8S7IWq87hQo3UeIhxujYTAHFjlrnz)
-
-
 ## Inspiration  
 
 We believe that cities of the future are built by those who live and interact with them daily. Despite government projects impacting communities each year and issues with city infrastructure, there are currently very few ways to provide meaningful input.  
@@ -93,3 +89,7 @@ Before you begin, ensure you have the following installed:
     The frontend development server will start on `http://localhost:3000` and open in your browser.
 
 The application should now be running, with the React frontend communicating with the Flask backend.
+
+## Some screenshots
+![Project Screenshot 1](https://drive.google.com/uc?export=view&id=1ervIXreePI3YrjGGJvXbrGwlnfbt3G3q)
+![Project Screenshot 2](https://drive.google.com/uc?export=view&id=1GuO8S7IWq87hQo3UeIhxujYTAHFjlrnz)
