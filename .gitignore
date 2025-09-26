@@ -4,5 +4,7 @@ __pycache__/
 *.pyc
 .DS_Store
 __pycache__
+*.env
+*.db
 
 flask-server/database.db
