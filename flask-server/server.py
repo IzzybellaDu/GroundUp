@@ -23,19 +23,10 @@ def login_required(f):
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve(path):
-    print("--- SERVE FUNCTION CALLED ---")
-    print(f"Request path: '{path}'")
-    print(f"app.static_folder: {app.static_folder}")
-    
     index_path = os.path.join(app.static_folder, 'index.html')
-    print(f"Checking for index.html at: {index_path}")
-    print(f"Does index.html exist? {os.path.exists(index_path)}")
-
     if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-        print(f"Serving static file: {path}")
         return send_from_directory(app.static_folder, path)
     else:
-        print("Serving index.html")
         return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/api/login', methods=['POST'])
@@ -277,4 +268,4 @@ def get_comments(project_id):
     return jsonify({"status": "success", "project": comment_list}), 200
     
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
