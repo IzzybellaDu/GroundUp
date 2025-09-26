@@ -1,13 +1,16 @@
 import json
-from flask import Flask, render_template, request, redirect, url_for, jsonify, session
+import os
+from flask import Flask, render_template, request, jsonify, session, send_from_directory
 from proposals import add_project, get_projects, vote_now, DB_path
 from accounts import authenticate_and_get_user, create_account
 from comments import add_comment_to_db, get_comments_from_db
 from functools import wraps
 import sqlite3
+from dotenv import load_dotenv
 
-app =  Flask(__name__)
-app.secret_key = 'secret-key'
+load_dotenv()
+app = Flask(__name__, static_folder='../client/build')
+app.secret_key = os.environ.get('SECRET_KEY', 'secret-key')
 
 def login_required(f):
     @wraps(f)
@@ -17,9 +20,14 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-@app.route('/')
-def index():
-    return render_template('/index.tsx')
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    path_dir = os.path.abspath("../client/build")  # path to your build directory
+    if path != "" and os.path.exists(os.path.join(path_dir, path)):
+        return send_from_directory(os.path.join(path_dir), path)
+    else:
+        return send_from_directory(os.path.join(path_dir), 'index.html')
 
 @app.route('/api/login', methods=['POST'])
 def login():
